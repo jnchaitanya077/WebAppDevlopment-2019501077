@@ -1,0 +1,16 @@
+.main-adv-body {
+    border: 1px solid black;
+    margin: 100px;
+    height: 50rem;
+    position: relative;
+}
+
+h1 {
+    text-align: center;
+    padding-top: 200px auto;
+}
+
+.card {
+    display: inline;
+    margin: 30px;
+}
