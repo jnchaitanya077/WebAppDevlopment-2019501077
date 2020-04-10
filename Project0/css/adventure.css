@@ -13,13 +13,13 @@ h1 {
     margin-top: 200px;
 }
 
-/* .navigation {
-    position: fixed;
-    width:100%;
-} */
-/* nav {
-    color: red;
-} */
+.carousel-item {
+    height: 40em;
+}
+
+.carousel-item img {
+    height: 40em;
+}
 
 .artical-heading {
     text-align: left;
@@ -32,7 +32,10 @@ h1 {
 
 
 
-.middle-container {
+
+
+.middle-container,
+.inside {
     border: 0.5px solid #918d80;
     margin: 0 200px;
     height: auto;
@@ -52,7 +55,8 @@ h1 {
 
 }
 
-.para {
+.para,
+.row {
     padding: 20px 20px;
 
 }
