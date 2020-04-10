@@ -24,7 +24,7 @@ body {
 
 .adventure-desc {
     clear: left;
-    font-family: 'Merriweather', serif;
+    /* font-family: 'Merriweather', serif; */
     font-size: 1.25rem;
     line-height: 2;
     left: 20px;
@@ -57,7 +57,7 @@ body {
 
 .nature-desc {
     clear: right;
-    font-family: 'Merriweather', serif;
+    /* font-family: 'Merriweather', serif; */
     font-size: 1.25rem;
     line-height: 2;
     left: 20px;
