@@ -9,18 +9,121 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title></title>
+    <title>Join Us</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+    <link rel="stylesheet" type="" href="css/adventure.css">
+    <link rel="stylesheet" href="css/bootstrap-grid.css">
+    <link rel="stylesheet" href="css/bootstrap-grid.min.css">
+    <link rel="stylesheet" type="" href="css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 </head>
 
 <body>
-    <!--[if lt IE 7]>
-            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
+    <div class="navigation">
+        <nav class="navbar navbar-expand-lg navbar navbar-dark bg-dark">
+            <a class="navbar-brand" href="#">Trek Club</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                    <a class="nav-item nav-link active" href="index.html">Home <span
+                            class="sr-only">(current)</span></a>
+                    <a class="nav-item nav-link" href="adventure.html">Features</a>
+                    <a class="nav-item nav-link" href="#">Pricing</a>
+                    <a class="nav-item nav-link" href="contact.html">Join Us</a>
+                </div>
+            </div>
+        </nav>
 
-    <script src="" async defer></script>
+    </div>
+
+
+    <div class="middle-container">
+        <img style="width:100%;" src="images/joinus.jpg" class="img-fluid" alt="Responsive image">
+        <div class="User-details-area">
+            <h1 class="heading">Join Us</h1>
+            <p class="para">Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece
+                of classical
+                Latin
+                literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at
+                Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a
+                Lorem
+                Ipsum passage, and going through the cites of the word in classical literature, discovered the
+                undoubtable
+                source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The
+                Extremes
+                of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very
+                popular
+                during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line
+                in
+                section 1.10.32.</p>
+
+            <form>
+                <div class="form-group row">
+                    <label for="firstname" class="col-sm-2 col-form-label">First Name</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" id="firstname" placeholder="First Name">
+                    </div>
+
+                </div>
+
+                <div class="form-group row">
+                    <label for="lastname" class="col-sm-2 col-form-label">Last Name</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" id="lastname" placeholder="Last Name">
+
+                    </div>
+
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label" for="gender">Gender</label>
+                    <div class="col-4">
+                        <select class="custom-select mb-2 mr-sm-2 mb-sm-0" id="inlineFormCustomSelect">
+                            <option selected>Choose...</option>
+                            <option value="1">Male</option>
+                            <option value="2">Female</option>
+                        </select>
+
+                    </div>
+
+                </div>
+
+                <div class="form-group row">
+                    <lable class="col-sm-2 col-form-label" for="city">City</lable>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" id="city" placeholder="City">
+
+                    </div>
+                </div>
+
+                <div class="form-group row">
+
+                    <label for="Email" class="col-sm-2 col-form-label">Email</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" id="Email" value="email@example.com">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="phone" class="col-2 col-form-label">Telephone</label>
+                    <div class="col-4">
+                        <input class="form-control" type="tel" value="91-(983)-234-5555" id="example-tel-input">
+                    </div>
+                </div>
+                <button class="btn btn-primary" type="submit">Submit form</button>
+
+
+            </form>
+
+        </div>
+
+    </div>
 </body>
 
 </html>
