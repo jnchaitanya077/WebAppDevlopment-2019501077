@@ -1,16 +1,32 @@
-.main-adv-body {
-    border: 1px solid black;
-    margin: 100px;
-    height: 50rem;
-    position: relative;
+html {
+    height: 1024;
 }
 
 h1 {
     text-align: center;
-    padding-top: 200px auto;
+    margin-top: 200px;
+}
+
+.artical-heading {
+    text-align: left;
 }
 
 .card {
     display: inline;
     margin: 30px;
+}
+
+.main-adv-body {
+    border: 1px solid #918d80;
+    margin: 100px;
+    height: 50rem;
+    position: relative;
+    padding-bottom: 100px;
+}
+
+.middle-container {
+    border: 0.5px solid #918d80;
+    margin: 200px;
+    height: auto;
+    padding-bottom: 100px;
 }
