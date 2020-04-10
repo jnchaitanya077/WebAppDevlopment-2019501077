@@ -1,0 +1,27 @@
+body {
+    margin: 0px;
+}
+
+.main-body {
+    background-image: url('https://wallpaperaccess.com/full/1546328.jpg');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    height: 55rem;
+    width: 100%;
+    position: relative;
+}
+
+.main-headding {
+
+    text-align: center;
+    margin: 0;
+    padding-top: 200px;
+
+}
+
+.main-headding2 {
+    text-align: center;
+    margin: 20px;
+
+}
