@@ -1,3 +1,9 @@
+$font-size : 30px;
+$size : medium;
+$margin : 20px;
+
+
+
 body {
     margin: 0px;
 }
@@ -7,41 +13,44 @@ body {
 
     .tile-two h1 {
         text-align: right;
-        font-size: 30px;
+        font-size: $font-size;
     }
 
     .tile-one h1 {
-        font-size: 30px;
+        font-size: $font-size;
     }
 
     .tile-one p {
-        font-size: medium;
+        font-size: $size;
     }
 
     .tile-two p {
-        font-size: medium;
+        font-size: $size;
     }
 
 
 }
 
-
-.body-images-one {
+.bodyimages {
     border-radius: 100%;
     width: 25%;
+
+}
+
+.body-images-one {
+    @extend.bodyimages;
     float: left;
-    margin-left: 20px;
-    margin-bottom: 20px;
-    padding-right: 20px;
+    margin-left: $margin;
+    margin-bottom: $margin;
+    padding-right: $margin;
 
 }
 
 .body-images-two {
-    border-radius: 100%;
-    width: 25%;
+    @extend.bodyimages;
     float: right;
-    margin-right: 20px;
-    margin-bottom: 20px;
+    margin-right: $margin;
+    margin-bottom: $margin;
 }
 
 .adventure-desc {
@@ -49,8 +58,8 @@ body {
     /* font-family: 'Merriweather', serif; */
     font-size: 1.25rem;
     line-height: 2;
-    left: 20px;
-    margin-left: 20px;
+    left: $margin;
+    margin-left: $margin;
 }
 
 .main-body {
@@ -73,7 +82,7 @@ body {
 
 .main-headding2 {
     text-align: center;
-    margin: 20px;
+    margin: $margin;
 
 }
 
@@ -82,7 +91,7 @@ body {
     /* font-family: 'Merriweather', serif; */
     font-size: 1.25rem;
     line-height: 2;
-    left: 20px;
+    left: $margin;
 
 }
 
@@ -100,7 +109,7 @@ body {
     background-color: black;
     height: 220px;
     color: white;
-    padding-left: 20px;
-    padding-top: 20px;
+    padding-left: $margin;
+    padding-top: $margin;
     text-align: center;
 }

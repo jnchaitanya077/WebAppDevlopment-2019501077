@@ -1,0 +1,81 @@
+body {
+  margin: 0px; }
+
+@media screen and (max-width: 700px) {
+  .tile-two h1 {
+    text-align: right;
+    font-size: 30px; }
+
+  .tile-one h1 {
+    font-size: 30px; }
+
+  .tile-one p {
+    font-size: medium; }
+
+  .tile-two p {
+    font-size: medium; } }
+.bodyimages, .body-images-one, .body-images-two {
+  border-radius: 100%;
+  width: 25%; }
+
+.body-images-one {
+  float: left;
+  margin-left: 20px;
+  margin-bottom: 20px;
+  padding-right: 20px; }
+
+.body-images-two {
+  float: right;
+  margin-right: 20px;
+  margin-bottom: 20px; }
+
+.adventure-desc {
+  clear: left;
+  /* font-family: 'Merriweather', serif; */
+  font-size: 1.25rem;
+  line-height: 2;
+  left: 20px;
+  margin-left: 20px; }
+
+.main-body {
+  background-image: url("https://wallpaperaccess.com/full/1546328.jpg");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  height: 55rem;
+  width: 100%;
+  position: relative; }
+
+.main-headding {
+  text-align: center;
+  margin: 0;
+  padding-top: 200px; }
+
+.main-headding2 {
+  text-align: center;
+  margin: 20px; }
+
+.nature-desc {
+  clear: right;
+  /* font-family: 'Merriweather', serif; */
+  font-size: 1.25rem;
+  line-height: 2;
+  left: 20px; }
+
+.tile-one,
+.tile-two {
+  padding-top: 50px;
+  display: inline-block; }
+
+.tile-two h1 {
+  text-align: right; }
+
+.footer {
+  background-color: black;
+  height: 220px;
+  color: white;
+  padding-left: 20px;
+  padding-top: 20px;
+  text-align: center; }
+
+/*# sourceMappingURL=syless.css.map */
