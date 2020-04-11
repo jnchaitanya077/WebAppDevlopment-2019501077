@@ -1,38 +1,65 @@
-body,html{
-  margin:0;
-  padding:0;
-  border:none;
+body,
+html {
+  margin: 0;
+  padding: 0;
+  border: none;
 
 }
 
-.leftpic p{
-  font-size: 2em;
+h1 {
+  font-size: 3em;
+
+
+}
+
+img {
+  width: 100%;
+}
+
+li {
+  font-size: 1.4rem;
+}
+
+.leftpic p {
+  font-size: 1.2em;
   padding-left: 1.2em;
 
-}
-
-.rightpic p{
-  font-size: 2em;
 
 }
 
-.leftpic,.rightpic{
-  margin-top: 2.5%;
-  padding-left:2.5%;
+.rightpic p {
+  font-size: 1.2em;
+
+
 }
 
-.footer{
-  height:30em;
+
+.leftpic,
+.rightpic {
+  padding-left: 2.5%;
+}
+
+
+.footer {
+  height: 30em;
   background-color: #ffb900;
 }
-.rightpic{
-  padding-top: 7em;
-  height : 50em;
+
+.paragraph {
+  font-size: 40rem;
+}
+
+.rightpic {
+  padding: 5% 5%;
+  height: 60%;
   background-color: #ffb900;
 }
-.subjects{
+
+.subjects {
   font-size: 2em;
   padding-left: 2.5%;
 }
-/* 
+
+/* body{
+  background-color: #ffb900;
 } */
