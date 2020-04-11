@@ -36,16 +36,8 @@ In every page responsive navigation bar is present at the top of the site which 
 
 ![Homepage](https://github.com/jnchaitanya077/WebAppDevlopment-2019501077/blob/master/Project0/Screenshots/index.JPG)
 
-![Homepage-2](https://github.com/jnchaitanya077/WebAppDevlopment-2019501077/blob/master/Project0/Screenshots/Index-2.JPG)
-
 ![adventure](https://github.com/jnchaitanya077/WebAppDevlopment-2019501077/blob/master/Project0/Screenshots/adventure.JPG)
-
-![adventure-2](https://github.com/jnchaitanya077/WebAppDevlopment-2019501077/blob/master/Project0/Screenshots/adventure-2.JPG)
 
 ![Toptrek](https://github.com/jnchaitanya077/WebAppDevlopment-2019501077/blob/master/Project0/Screenshots/Toptrek.JPG)
 
-![toptrek-2](https://github.com/jnchaitanya077/WebAppDevlopment-2019501077/blob/master/Project0/Screenshots/toptrek-2.JPG)
-
 ![join us](https://github.com/jnchaitanya077/WebAppDevlopment-2019501077/blob/master/Project0/Screenshots/joinus.JPG)
-
-![joinus-2](https://github.com/jnchaitanya077/WebAppDevlopment-2019501077/blob/master/Project0/Screenshots/toptrek-2.JPG)
