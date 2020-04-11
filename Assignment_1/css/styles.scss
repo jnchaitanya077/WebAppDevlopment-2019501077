@@ -1,0 +1,115 @@
+$font-size : 30px;
+$size : medium;
+$margin : 20px;
+
+
+
+body {
+    margin: 0px;
+}
+
+@media screen and (max-width: 700px) {
+
+
+    .tile-two h1 {
+        text-align: right;
+        font-size: $font-size;
+    }
+
+    .tile-one h1 {
+        font-size: $font-size;
+    }
+
+    .tile-one p {
+        font-size: $size;
+    }
+
+    .tile-two p {
+        font-size: $size;
+    }
+
+
+}
+
+.bodyimages {
+    border-radius: 100%;
+    width: 25%;
+
+}
+
+.body-images-one {
+    @extend.bodyimages;
+    float: left;
+    margin-left: $margin;
+    margin-bottom: $margin;
+    padding-right: $margin;
+
+}
+
+.body-images-two {
+    @extend.bodyimages;
+    float: right;
+    margin-right: $margin;
+    margin-bottom: $margin;
+}
+
+.adventure-desc {
+    clear: left;
+    /* font-family: 'Merriweather', serif; */
+    font-size: 1.25rem;
+    line-height: 2;
+    left: $margin;
+    margin-left: $margin;
+}
+
+.main-body {
+    background-image: url('https://wallpaperaccess.com/full/1546328.jpg');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    height: 55rem;
+    width: 100%;
+    position: relative;
+}
+
+.main-headding {
+
+    text-align: center;
+    margin: 0;
+    padding-top: 200px;
+
+}
+
+.main-headding2 {
+    text-align: center;
+    margin: $margin;
+
+}
+
+.nature-desc {
+    clear: right;
+    /* font-family: 'Merriweather', serif; */
+    font-size: 1.25rem;
+    line-height: 2;
+    left: $margin;
+
+}
+
+.tile-one,
+.tile-two {
+    padding-top: 50px;
+    display: inline-block;
+}
+
+.tile-two h1 {
+    text-align: right;
+}
+
+.footer {
+    background-color: black;
+    height: 220px;
+    color: white;
+    padding-left: $margin;
+    padding-top: $margin;
+    text-align: center;
+}
