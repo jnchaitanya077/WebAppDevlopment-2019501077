@@ -4,7 +4,6 @@ import time
 
 from flask import Flask, session, render_template, request
 from register import *
-seconds = time.time()
 
 
 app = Flask(__name__)
@@ -44,16 +43,12 @@ def userDetails():
 
     try:
         user = User(firstname=firstName, lastname=lastName,
-                    username=userName, password=password, gender=gender, time_registered=time.ctime(seconds))
+                    username=userName, password=password, gender=gender, time_registered=time.ctime(time.time()))
         db.session.add(user)
         db.session.commit()
 
     except ValueError:
         return render_template("error.html", message="New user creation failed.")
-
-    print(firstName, file=sys.stderr)
-    print(lastName, file=sys.stderr)
-    print(userName, file=sys.stderr)
 
     return render_template("user.html",  user=userName, name=firstName+" "+lastName)
 
