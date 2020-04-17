@@ -9,9 +9,10 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>{{userName}}</title>
+    <title>Admin</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="">
     <link href=" https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
@@ -23,14 +24,35 @@
 </head>
 
 <body>
+    <div class="container">
+        <h1 style="margin:20px;">User Admin page</h1>
+        <table class="table table-bordered table-dark">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Username</th>
+                    <th scope="col">Password</th>
+                    <th scope="col">Time created</th>
+                </tr>
+            </thead>
+            <tbody>
 
-    <div class="alert alert-success" role="alert">
-        Successfully Registered, {{name}}
+                {% for user in users %}
+                <tr>
+                    <th scope="row"> {{ loop.index }} </th>
+                    <td>{{user.username}}</td>
+                    <td>{{user.password}}</td>
+                    <td>{{user.time_registered}}</td>
+                </tr>
+                {% endfor %}
+
+
+
     </div>
 
-    <h2>Username: {{user}}</h2>
 
-
+    </tbody>
+    </table>
 </body>
 
 </html>
