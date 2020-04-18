@@ -53,7 +53,7 @@
           <a class="nav-link" href="#">Disabled</a>
         </li>
       </ul>
-      <form class="form-inline my-2 my-lg-0">
+      <form class="form-inline my-2 my-lg-0" action="{{ url_for('login') }}" method="post">
         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
           Login
         </button>
@@ -64,6 +64,7 @@
   <div class="container" id="main">
     <div class="registration">
       <form action="{{ url_for('userDetails') }}" method="post">
+        <h1>Register</h1>
         <label for="fname">First name:</label><br />
         <input type="text" id="fname" name="fname" /><br />
         <label for="lname">Last name:</label><br />

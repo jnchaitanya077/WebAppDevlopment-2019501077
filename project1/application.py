@@ -32,6 +32,14 @@ def register():
     return render_template("registration.html")
 
 
+@app.route("/login", methods=["POST", "GET"])
+def login():
+    if request.method == "POST":
+
+        return render_template("login.html")
+    return "<h1>Fill the registration</h1>"
+
+
 @app.route("/userDetails", methods=["POST"])
 def userDetails():
     firstName = request.form.get("fname")
