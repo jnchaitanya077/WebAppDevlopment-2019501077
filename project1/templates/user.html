@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>{{userName}}</title>
+    <title>{{username}}</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href=" https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet"
@@ -37,8 +37,8 @@
                 </li>
 
             </ul>
-            <form class="form-inline my-2 my-lg-0" action="{{ url_for('logout') }}">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+            <form class="form-inline my-2 my-lg-0" action="{{ url_for('logout',username=username) }}">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Logout
                     Logout
                 </button>
             </form>

@@ -34,18 +34,16 @@ def register():
     return render_template("registration.html")
 
 
-@app.route("/logout")
-def logout():
-    session.pop('username', None)
+@app.route("/logout/<username>")
+def logout(username):
+    session.pop(username, None)
     return redirect(url_for('index'))
 
 
-@app.route("/home")
-def home():
-    if 'username' in session:
-        username = session['username']
-        return render_template("user.html", username=username, message="Successfully logged in.", heading="Welcome back")
-
+@app.route("/home/<user>")
+def userHome(user):
+    if user in session:
+        return render_template("user.html", username=user, message="Successfully logged in.", heading="Welcome back")
     return redirect(url_for('index'))
 
 
@@ -56,7 +54,7 @@ def allusers():
     return render_template("admin.html", users=users)
 
 
-@app.route("/auth", methods=["POST"])
+@app.route("/auth", methods=["POST", "GET"])
 def auth():
     if request.method == "POST":
         username = request.form.get('username')
@@ -68,34 +66,40 @@ def auth():
         # if user is present, validate username and password
         if userData is not None:
             if userData.username == username and userData.password == usr_pas:
-                session['username'] = request.form['username']
-                return redirect(url_for('home'))
+                session[username] = username
+                return redirect(url_for('userHome', user=username))
             # user verification failed
             else:
                 return render_template("registration.html", message="username/password is incorrect!!")
         # if user doesn't exists.
         else:
-            return redirect(url_for('index'))
-    # if try access directly
+            return render_template("registration.html", message="Account doesn't exists, Please register!")
+    # if try to access directly
     else:
         return "<h1>Please login/register instead.</h1>"
 
 
-@app.route("/userDetails", methods=["POST"])
+@app.route("/userDetails", methods=["POST", "GET"])
 def userDetails():
-    firstName = request.form.get("fname")
-    lastName = request.form.get("lname")
-    userName = request.form.get("username")
-    password = request.form.get("password")
-    gender = request.form.get("gender")
+    if request.method == "POST":
+        firstName = request.form.get("fname")
+        lastName = request.form.get("lname")
+        userName = request.form.get("username")
+        password = request.form.get("password")
+        gender = request.form.get("gender")
+        email = request.form.get("email")
 
-    user = User(firstname=firstName, lastname=lastName,
-                username=userName, password=password, gender=gender, time_registered=time.ctime(time.time()))
-    try:
-        db.session.add(user)
-        db.session.commit()
-        session['username'] = request.form['username']
-        return render_template("user.html",  user=userName, message="Successfully Registered", name=firstName+" "+lastName)
+        user = User(firstname=firstName, lastname=lastName,
+                    username=userName, password=password, gender=gender, time_registered=time.ctime(time.time()))
 
-    except:
-        return render_template("registration.html", message="Fill all the details!")
+        # check if all details were given for registration.
+        try:
+            db.session.add(user)
+            db.session.commit()
+            print(request.form['username'])
+            session[userName] = request.form['username']
+            return render_template("user.html",  user=userName, message="Successfully Registered", name=firstName+" "+lastName)
+
+        except:
+            return render_template("registration.html", message="Fill all the details!")
+    return "<h1>Please Register</h1>"

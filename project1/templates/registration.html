@@ -60,8 +60,8 @@
         <input type="email" id="mail" name="mail" /><br />
         <label for="phone">Mobile Number:</label><br />
         <input type="tel" id="phnumber" name="phnumber" /><br />
-        <button type="submit" class="btn btn-success" formmethod="POST" formaction="{{ url_for('userDetails') }}"
-          method="post">Register</button>
+        <button type="submit" class="btn btn-success" formmethod="POST"
+          formaction="{{ url_for('userDetails') }}">Register</button>
         <button class="btn btn-success" type="submit" formmethod="POST"
           formaction="{{ url_for('auth') }}">Login</button>
       </form>
