@@ -1,12 +1,12 @@
 import os
 import time
 
-from flask import Flask, session, render_template, request
+from flask import Flask, session, render_template, request, redirect, url_for, escape, request
 from register import *
 
 
 app = Flask(__name__)
-
+app.secret_key = 'any random string'
 
 # Check for environment variable
 if not os.getenv("DATABASE_URL"):
@@ -24,7 +24,9 @@ with app.app_context():
 
 @app.route("/")
 def index():
-    return "<h1>Register</h1>"
+    if 'username' in session:
+        return redirect(url_for('home'))
+    return redirect(url_for('register'))
 
 
 @app.route("/register")
@@ -32,12 +34,51 @@ def register():
     return render_template("registration.html")
 
 
-@app.route("/login", methods=["POST", "GET"])
-def login():
-    if request.method == "POST":
+@app.route("/logout")
+def logout():
+    session.pop('username', None)
+    return redirect(url_for('index'))
 
-        return render_template("login.html")
-    return "<h1>Fill the registration</h1>"
+
+@app.route("/home")
+def home():
+    if 'username' in session:
+        username = session['username']
+        return render_template("user.html", username=username, message="Successfully logged in.", heading="Welcome back")
+
+    return redirect(url_for('index'))
+
+
+@app.route("/admin")
+def allusers():
+    users = User.query.all()
+
+    return render_template("admin.html", users=users)
+
+
+@app.route("/auth", methods=["POST"])
+def auth():
+    if request.method == "POST":
+        username = request.form.get('username')
+        usr_pas = request.form.get('password')
+
+        # check if user existed or not
+        userData = User.query.filter_by(username=username).first()
+
+        # if user is present, validate username and password
+        if userData is not None:
+            if userData.username == username and userData.password == usr_pas:
+                session['username'] = request.form['username']
+                return redirect(url_for('home'))
+            # user verification failed
+            else:
+                return render_template("registration.html", message="username/password is incorrect!!")
+        # if user doesn't exists.
+        else:
+            return redirect(url_for('index'))
+    # if try access directly
+    else:
+        return "<h1>Please login/register instead.</h1>"
 
 
 @app.route("/userDetails", methods=["POST"])
@@ -48,20 +89,13 @@ def userDetails():
     password = request.form.get("password")
     gender = request.form.get("gender")
 
+    user = User(firstname=firstName, lastname=lastName,
+                username=userName, password=password, gender=gender, time_registered=time.ctime(time.time()))
     try:
-        user = User(firstname=firstName, lastname=lastName,
-                    username=userName, password=password, gender=gender, time_registered=time.ctime(time.time()))
         db.session.add(user)
         db.session.commit()
+        session['username'] = request.form['username']
+        return render_template("user.html",  user=userName, message="Successfully Registered", name=firstName+" "+lastName)
 
-    except ValueError:
-        return render_template("error.html", message="New user creation failed.")
-
-    return render_template("user.html",  user=userName, name=firstName+" "+lastName)
-
-
-@app.route("/admin")
-def allusers():
-    users = User.query.all()
-
-    return render_template("admin.html", users=users, count=1)
+    except:
+        return render_template("registration.html", message="Fill all the details!")

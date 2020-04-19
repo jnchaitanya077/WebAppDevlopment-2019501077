@@ -61,7 +61,8 @@
 
     <div class="container" id="main">
         <div class="registration">
-            <form action="{{ url_for('login') }}" method="post">
+            <form action="{{ url_for('login') }}" method="POST">
+                <p style="color:red;">{{ message }}</p>
                 <h1>Login</h1>
                 <label for="username">Username:</label><br />
                 <input type="text" id="username" name="username" /><br />
