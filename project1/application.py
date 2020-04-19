@@ -1,7 +1,7 @@
 import os
 import time
 
-from flask import Flask, session, render_template, request
+from flask import Flask, session, render_template, request, redirect, url_for
 from register import *
 
 
@@ -24,7 +24,7 @@ with app.app_context():
 
 @app.route("/")
 def index():
-    return "<h1>Register</h1>"
+    return redirect(url_for('register'))
 
 
 @app.route("/register")
