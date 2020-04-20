@@ -1,7 +1,7 @@
 import os
 import time
 
-from flask import Flask, session, render_template, request, redirect, url_for, escape, request
+from flask import Flask, session, render_template, request, redirect, url_for, escape
 from register import *
 
 
