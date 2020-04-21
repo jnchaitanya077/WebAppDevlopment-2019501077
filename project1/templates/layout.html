@@ -1,12 +1,16 @@
 <!DOCTYPE html>
 <html class="no-js">
 
+
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>{{username}}</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% block head %}
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>{% block title %}{% endblock %}Registration</title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
+
     <link href=" https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
@@ -15,13 +19,13 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"
         integrity="sha384-6khuMg9gaYr5AxOqhkVIODVIvm9ynTT5J4V1cfthmT+emCG6yVmEZsRHdxlotUnm" crossorigin="anonymous">
     </script>
+    {% endblock%}
 </head>
 
 <body>
-
-
+    {% block nav%}
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">Book-Read</a>
+        <a class="navbar-brand" href="#">Navbar</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -37,28 +41,33 @@
                     <a class="nav-link" href="#">Link</a>
                 </li>
 
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Disabled</a>
+                </li>
             </ul>
-            <form class="form-inline my-2 my-lg-0" action="{{ url_for('logout',username=username) }}">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Logout
+            <form class="form-inline my-2 my-lg-0">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+                    Login
                 </button>
             </form>
         </div>
     </nav>
+    {% blockend %}
 
+    <div class="container" id="main">{% block content%}
+        <div class="registration">
 
-
-    <div class="alert alert-success" role="alert">
-        {{message}}
+        </div>
     </div>
-
-    <h1 style="text-align: center;">{{heading}}, {{username}}</h1>
-
-
-    <h1>Successfully Registered, {{name}}</h1>
-    <h2>Username: {{user}}</h2>
-    <h2>Name: {{name}}</h2>
-
-
+    {% endblock %}
 </body>
 
 </html>
