@@ -89,17 +89,22 @@ def userDetails():
         gender = request.form.get("gender")
         email = request.form.get("email")
 
-        user = User(firstname=firstName, lastname=lastName,
-                    username=userName, password=password, gender=gender, time_registered=time.ctime(time.time()))
+        # check if user existed or not
+        userData = User.query.filter_by(email=email).first()
 
-        # check if all details were given for registration.
-        try:
-            db.session.add(user)
-            db.session.commit()
-            print(request.form['username'])
-            session[userName] = request.form['username']
-            return render_template("user.html",  user=userName, message="Successfully Registered", name=firstName+" "+lastName)
+        if userData is not None:
+            return render_template("registration.html", message="email already exists, Please login.")
+        else:
+            user = User(firstname=firstName, lastname=lastName,
+                        username=userName, password=password, gender=gender, time_registered=time.ctime(time.time()), email=email)
 
-        except:
-            return render_template("registration.html", message="Fill all the details!")
+            # check if all details were given for registration.
+            try:
+                db.session.add(user)
+                db.session.commit()
+                session[userName] = request.form['username']
+                return render_template("user.html",  username=userName, message="Successfully Registered", name=firstName+" "+lastName)
+
+            except:
+                return render_template("registration.html", message="Fill all the details!")
     return "<h1>Please Register</h1>"
