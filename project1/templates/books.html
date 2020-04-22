@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>{{book}}</title>
+    <title>{{book.title}}</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="">
@@ -43,35 +43,52 @@
 
     <div class="container">
         <div class="clearfix">
-            <img src="{{ url_for('static', filename='img/OIP.jpg') }}" class="img2" alt="Cinque Terre" width="200"
-                height="300">
-            <table>
+            <img src="http://covers.openlibrary.org/b/isbn/{{book.isbn}}-L.jpg" class="img2" alt={{book.isbn}}
+                width="300" height="400">
+            <table id="tab">
                 <tr>
-                    <td><b>ISBN:</b>123456789</td>
-                    <td><b>Author:</b>Lorem Ipsum is simply dummy</td>
+                    <thead>
+                        <h1>{{book.title}}</h1>
+                    </thead>
+
                 </tr>
                 <tr>
-                    <td><b>Reviews:</b>7</td>
-                    <td><b>Year Published:</b>2020</td>
+                    <td><b>ISBN:&nbsp&nbsp</b>{{book.isbn}}</td>
+                    <td><b>Author:&nbsp&nbsp</b>{{book.author}}</td>
+
+                </tr>
+                <tr>
+                    <td><b>Rating:&nbsp&nbsp</b>{{res['average_rating']}}</td>
+                    <td><b>Year Published:&nbsp&nbsp</b>{{book.year}}</td>
+                </tr>
+                <tr>
+                    <td><b>Review Count:&nbsp&nbsp</b>{{res['reviews_count']}}</td>
                 </tr>
             </table>
 
         </div>
-
-        <div class="results">
-            <table>
-                {% for review in reviewers %}
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <hr>
-                {% endfor %}
-            </table>
-        </div>
-
         <hr>
+        <div class="reviews">
+            <h2 id="heading">Reviews</h2>
+
+            {% for i in range(11) %}
+
+            <div class="review-body">
+
+                <p>
+                    <b>Chaitanya</b> Dec 12,2019<br>
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
+                    industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type
+                    and scrambled it to make a type specimen book. </p>
+
+            </div>
+            <hr>
+            {% endfor %}
+
+
+        </div>
+
+
     </div>
 
 

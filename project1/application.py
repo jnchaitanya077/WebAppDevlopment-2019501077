@@ -1,5 +1,8 @@
 import os
 import time
+import requests
+import json
+from test import bookreview
 
 from flask import Flask, session, render_template, request, redirect, url_for, escape
 from register import *
@@ -112,4 +115,23 @@ def userDetails():
 
 @app.route("/test")
 def test():
-    return render_template("books.html", book="titanic")
+    # username
+    # book details
+    book = bookreview(0441017835, "A Touch of Dead", "Charlaine Harris", 2009)
+
+    res = requests.get("https://www.goodreads.com/book/review_counts.json",
+                       params={"key": "2VIV9mRWiAq0OuKcOPiA", "isbns": "1416949658"})
+    data = res.text
+    parsed = json.loads(data)
+    print(parsed)
+    res = {}
+    for i in parsed:
+        for j in (parsed[i]):
+            res = j
+    url = str(
+        f"https://api.nytimes.com/svc/books/v3/reviews.json?isbn={res['isbn13']}&api-key=nyfL9ABWlZKN3ZH9LIwzALP1W13KuYG4")
+    response = requests.get(url)
+    data_review = response.text
+    print(data_review)
+
+    return render_template("books.html", res=res, book=book)
