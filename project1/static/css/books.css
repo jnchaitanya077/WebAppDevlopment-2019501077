@@ -1,0 +1,11 @@
+/* hr {
+    display: block;
+} */
+
+.clearfix {
+    overflow: auto;
+}
+
+.img2 {
+    float: left;
+}

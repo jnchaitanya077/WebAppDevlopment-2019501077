@@ -108,3 +108,8 @@ def userDetails():
             except:
                 return render_template("registration.html", message="Fill all the details!")
     return "<h1>Please Register</h1>"
+
+
+@app.route("/test")
+def test():
+    return render_template("books.html", book="titanic")
