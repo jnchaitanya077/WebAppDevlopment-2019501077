@@ -1,8 +1,12 @@
 import os
 import time
+import sys
 
 from flask import Flask, session, render_template, request, redirect, url_for, escape
+from sqlalchemy import or_
 from register import *
+from booktable import *
+
 
 
 app = Flask(__name__)
@@ -43,7 +47,7 @@ def logout(username):
 @app.route("/home/<user>")
 def userHome(user):
     if user in session:
-        return render_template("user.html", username=user, message="Successfully logged in.", heading="Welcome back")
+        return render_template("search.html", username=user, message="Successfully logged in.", heading="Welcome back")
     return redirect(url_for('index'))
 
 
@@ -108,3 +112,21 @@ def userDetails():
             except:
                 return render_template("registration.html", message="Fill all the details!")
     return "<h1>Please Register</h1>"
+
+@app.route("/search", methods=["POST", "GET"])
+
+def search():
+    print("Iam here", file = sys.stderr)
+
+    if request.method == "POST":
+
+        res = request.form.get("Search")
+        print(res)
+        abc = books.query.filter_by(title = res).first()
+        print(abc, file = sys.stderr)
+
+    else:
+
+        return redirect(url_for('search'))
+
+
