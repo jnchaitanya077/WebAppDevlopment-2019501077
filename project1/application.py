@@ -4,8 +4,11 @@ import requests
 import json
 from test import bookreview
 
+
 from flask import Flask, session, render_template, request, redirect, url_for, escape
 from register import *
+from userReview import *
+from sqlalchemy import and_, or_
 
 
 app = Flask(__name__)
@@ -113,14 +116,17 @@ def userDetails():
     return "<h1>Please Register</h1>"
 
 
-@app.route("/test")
+@app.route("/bookpage")
 def test():
-    # username
-    # book details
-    book = bookreview(0441017835, "A Touch of Dead", "Charlaine Harris", 2009)
 
+    # Creating book object for testing purpose
+    book = bookreview("0345424646", "A Knight of the Word",
+                      "Terry Brooks", 1998)
+    # Get book details using goodreads api
     res = requests.get("https://www.goodreads.com/book/review_counts.json",
-                       params={"key": "2VIV9mRWiAq0OuKcOPiA", "isbns": "1416949658"})
+                       params={"key": "2VIV9mRWiAq0OuKcOPiA", "isbns": book.isbn})
+
+    # Parsing the data
     data = res.text
     parsed = json.loads(data)
     print(parsed)
@@ -128,10 +134,20 @@ def test():
     for i in parsed:
         for j in (parsed[i]):
             res = j
-    url = str(
-        f"https://api.nytimes.com/svc/books/v3/reviews.json?isbn={res['isbn13']}&api-key=nyfL9ABWlZKN3ZH9LIwzALP1W13KuYG4")
-    response = requests.get(url)
-    data_review = response.text
-    print(data_review)
 
-    return render_template("books.html", res=res, book=book)
+    # Variables for testing
+    bookisbn = book.isbn
+    user = "chaitu.krish4"
+
+    # database query to check if the user had given review to that paticular book
+    rev = review.query.filter(review.isbn.like(
+        bookisbn), review.username.like(user)).first()
+
+    # Get all the reviews for the given book
+    allreviews = review.query.filter(review.isbn.like(bookisbn)).all()
+    # print(rev.username, rev.title, rev.review)
+
+    # if review was not given then dispaly the book page with review button
+    if rev is None:
+        return render_template("books.html", res=res, book=book, review=allreviews)
+    return render_template("books.html", message="You reviewed this book!!", book=book, review=allreviews, res=res, property="none")

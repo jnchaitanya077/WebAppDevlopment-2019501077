@@ -65,10 +65,12 @@
                     <td><b>Review Count:&nbsp&nbsp</b>{{res['reviews_count']}}</td>
                 </tr>
             </table>
+            <button style="display: {{property}};" type="button" class="btn btn-outline-success">Review</button>
 
         </div>
         <hr>
         <div class="reviews">
+            <p style="color:red;text-align:center;">{{message}}</p>
             <h2 id="heading">Reviews</h2>
 
             {% for i in range(11) %}
@@ -76,10 +78,8 @@
             <div class="review-body">
 
                 <p>
-                    <b>Chaitanya</b> Dec 12,2019<br>
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
-                    industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type
-                    and scrambled it to make a type specimen book. </p>
+                    <b>{{review.username}}</b> {{review.time_stamp}}<br>
+                    {{review.review}} </p>
 
             </div>
             <hr>
