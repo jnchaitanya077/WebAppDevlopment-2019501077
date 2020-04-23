@@ -116,17 +116,19 @@ def userDetails():
 @app.route("/search", methods=["POST", "GET"])
 
 def search():
-    print("Iam here", file = sys.stderr)
 
-    if request.method == "POST":
+    if request.method == "GET":
+   
+        return render_template("search.html")
 
-        res = request.form.get("Search")
-        print(res)
-        abc = books.query.filter_by(title = res).first()
-        print(abc, file = sys.stderr)
+    else: 
 
-    else:
+        res = request.form.get("find")
 
-        return redirect(url_for('search'))
+        res =  '%'+res+'%'
 
+        result = books.query.filter(or_(books.title.like(res), books.author.like(res), books.isbn.like(res))).all()
 
+        print(result)
+
+        return render_template("results.html", result = result)
