@@ -3,6 +3,10 @@ import time
 
 from flask import Flask, session, render_template, request, redirect, url_for, escape
 from register import *
+from test import bookreview
+import requests
+import json
+
 
 
 app = Flask(__name__)
@@ -108,3 +112,19 @@ def userDetails():
             except:
                 return render_template("registration.html", message="Fill all the details!")
     return "<h1>Please Register</h1>"
+@app.route("/review", methods=["POST", "GET"])
+def review():
+    book = bookreview("1439152802", "The Secret Keeper","Kate Morton", 2012)
+    res = requests.get("https://www.goodreads.com/book/review_counts.json",
+                       params={"key": "2VIV9mRWiAq0OuKcOPiA", "isbns": book.isbn})
+                  
+  
+    data = res.text
+    parsed = json.loads(data)
+    print(parsed)
+    res = {}
+    for i in parsed:
+        for j in (parsed[i]):
+            res = j
+    return render_template("review.html",book = book, res = res) 
+
