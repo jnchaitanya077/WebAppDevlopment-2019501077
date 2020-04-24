@@ -47,7 +47,7 @@ def logout(username):
 @app.route("/home/<user>")
 def userHome(user):
     if user in session:
-        return render_template("search.html", username=user, message="Successfully logged in.", heading="Welcome back")
+        return redirect(url_for("search", user=user))
     return redirect(url_for('index'))
 
 
@@ -113,13 +113,13 @@ def userDetails():
                 return render_template("registration.html", message="Fill all the details!")
     return "<h1>Please Register</h1>"
 
-@app.route("/search", methods=["POST", "GET"])
+@app.route("/search/<user>", methods=["POST", "GET"])
 
-def search():
+def search(user):
 
     if request.method == "GET":
    
-        return render_template("search.html")
+        return render_template("search.html",user=user)
 
     else: 
 
@@ -129,6 +129,12 @@ def search():
 
         result = books.query.filter(or_(books.title.like(res), books.author.like(res), books.isbn.like(res))).all()
 
-        print(result)
+        return render_template("results.html", result = result,user=user)
 
-        return render_template("results.html", result = result)
+
+
+@app.route("/bookpage/<user>/<isbn>")
+def bookpage(user,isbn):
+
+    obj = books.query.filter_by(isbn=isbn).first()
+    return render_template("bookpage.html",isbn=obj.title,user=user)

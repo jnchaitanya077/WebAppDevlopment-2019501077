@@ -18,7 +18,7 @@
           <form>
             <input class="search_input" type="text" name="find" placeholder="Search...">
             <button type="submit" class="btn btn-success" formmethod="POST"
-            formaction="{{ url_for('search') }}">Search</button>
+            formaction="{{ url_for('search',user=user) }}">Search</button>
           </form>
         </div>
       </div>

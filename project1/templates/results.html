@@ -8,6 +8,7 @@
     <title>Admin</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href = "Search.css" rel = "stylesheet">
     <link rel="stylesheet" href="">
     <link href=" https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
@@ -17,6 +18,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"
         integrity="sha384-6khuMg9gaYr5AxOqhkVIODVIvm9ynTT5J4V1cfthmT+emCG6yVmEZsRHdxlotUnm" crossorigin="anonymous">
     </script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 
 <body>
@@ -35,9 +37,10 @@
             <tbody>
 
                 {% for book in result %}
+                <!-- isbn = book.isbn -->
                 <tr>
                     <th scope="row"> {{ loop.index }} </th>
-                    <td>{{book.isbn}}</td>
+                    <td><a href ="{{url_for('bookpage',isbn=book.isbn,user=user)}}">{{book.isbn}}</a></td>
                     <td>{{book.title}}</td>
                     <td>{{book.author}}</td>
                     <td>{{book.year}}</td>
