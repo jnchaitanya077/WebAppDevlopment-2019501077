@@ -70,16 +70,16 @@
         </div>
         <hr>
         <div class="reviews">
-            <p style="color:red;text-align:center;">{{message}}</p>
+            <p style="color:rgb(22, 233, 22);text-align:center;">{{message}}</p>
             <h2 id="heading">Reviews</h2>
 
-            {% for i in range(11) %}
+            {% for i in review %}
 
             <div class="review-body">
 
                 <p>
-                    <b>{{review.username}}</b> {{review.time_stamp}}<br>
-                    {{review.review}} </p>
+                    <b>{{i.username}}</b> {{i.time_stamp}}<br>
+                    {{i.review}} </p>
 
             </div>
             <hr>

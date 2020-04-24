@@ -13,15 +13,11 @@ table {
     overflow: auto;
 }
 
+
 .container {
-    /* background-color: rgba(96, 96, 96, 0.7); */
-    width: 30%;
-    /* margin-top: 5%; */
-    position: relative;
-    padding: 2%;
-    /* border-radius: 5%; */
-    -webkit-box-shadow: 5px 5px 15px 5px rgba(0, 0, 0, 0.26);
-    box-shadow: 5px 5px 15px 5px rgba(0, 0, 0, 0.26);
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    padding: 20px;
 }
 
 #heading {

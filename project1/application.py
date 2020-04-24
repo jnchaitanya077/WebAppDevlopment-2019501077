@@ -5,10 +5,9 @@ import json
 from test import bookreview
 
 
-from flask import Flask, session, render_template, request, redirect, url_for, escape
+from flask import Flask, session, render_template, request, redirect, url_for
 from register import *
 from userReview import *
-from sqlalchemy import and_, or_
 
 
 app = Flask(__name__)
@@ -120,8 +119,8 @@ def userDetails():
 def test():
 
     # Creating book object for testing purpose
-    book = bookreview("0345424646", "A Knight of the Word",
-                      "Terry Brooks", 1998)
+    book = bookreview("1451648537", "Steve Jobs",
+                      "Walter Isaacson", 2011)
     # Get book details using goodreads api
     res = requests.get("https://www.goodreads.com/book/review_counts.json",
                        params={"key": "2VIV9mRWiAq0OuKcOPiA", "isbns": book.isbn})
@@ -144,8 +143,12 @@ def test():
         bookisbn), review.username.like(user)).first()
 
     # Get all the reviews for the given book
-    allreviews = review.query.filter(review.isbn.like(bookisbn)).all()
+    # bookisbn = '%'+bookisbn+'%'
+    allreviews = review.query.filter_by(isbn=bookisbn).all()
     # print(rev.username, rev.title, rev.review)
+    # print(allreviews)
+    for i in allreviews:
+        print(i.review)
 
     # if review was not given then dispaly the book page with review button
     if rev is None:
