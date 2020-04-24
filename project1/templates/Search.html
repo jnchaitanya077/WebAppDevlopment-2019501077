@@ -17,9 +17,9 @@
         <div class="searchbar">
           <form>
             <input class="search_input" type="text" name="find" placeholder="Search...">
-            <button type="submit" class="btn btn-success" onclick= "loadDoc()">Search</button>
+            <button type="submit" class="btn btn-success" formaction="{{ url_for('search',user=user) }}" formmethod = "POST">Search</button>
           </form>
-          <p id="demo"></p>
+          <!-- <p id="demo"></p>
           <script>
             function loadDoc() {
               var xhttp = new XMLHttpRequest();
@@ -28,10 +28,11 @@
                   document.getElementById("demo").innerHTML = this.responseText;
                 }
               };
-              xhttp.open("POST", "{{ url_for('search',user=user) }}", true);
-              xhttp.send(res);
+              xhttp.open("GET", "{{ url_for('search',user=user) }}", true);
+              xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+              xhttp.send(result);
             }
-          </script>
+          </script> -->
         </div>
       </div>
     </div>
@@ -41,3 +42,4 @@
 
 
 
+e
