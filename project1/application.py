@@ -127,7 +127,7 @@ def search(user):
 
         res =  '%'+res+'%'
 
-        result = books.query.filter(or_(books.title.like(res), books.author.like(res), books.isbn.like(res))).all()
+        result = books.query.filter(or_(books.title.ilike(res), books.author.ilike(res), books.isbn.ilike(res))).all()
 
         return render_template("results.html", result = result,user=user)
 

@@ -24,10 +24,10 @@
 <body>
     <div class="container">
         <h1 style="margin:20px;">Search Results</h1>
-        <table class="table table-bordered table-dark">
+        <table style = "text-align: center;" class="table">
             <thead class="thead-dark">
                 <tr>
-                    <th scope="col">#</th>
+                    <th scope="col">Book</th>
                     <th scope="col">Isbn</th>
                     <th scope="col">Title</th>
                     <th scope="col">Author</th>
@@ -39,7 +39,8 @@
                 {% for book in result %}
                 <!-- isbn = book.isbn -->
                 <tr>
-                    <th scope="row"> {{ loop.index }} </th>
+                    <th scope="row"><img src="http://covers.openlibrary.org/b/isbn/{{book.isbn}}-M.jpg" class="img2" alt={{book.isbn}}
+                    width="100" height="150"></th>
                     <td><a href ="{{url_for('bookpage',isbn=book.isbn,user=user)}}">{{book.isbn}}</a></td>
                     <td>{{book.title}}</td>
                     <td>{{book.author}}</td>
