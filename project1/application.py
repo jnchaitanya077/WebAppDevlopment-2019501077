@@ -1,12 +1,13 @@
 import os
 import time
-
-from flask import Flask, session, render_template, request, redirect, url_for, escape
-from register import *
-from test import bookreview
 import requests
 import json
+from test import bookreview
 
+
+from flask import Flask, session, render_template, request, redirect, url_for
+from register import *
+from userReview import *
 
 
 app = Flask(__name__)
@@ -53,8 +54,16 @@ def userHome(user):
 
 @app.route("/admin")
 def allusers():
-    users = User.query.all()
 
+    users = User.query.all()
+    # details = {}
+    # accountDetails = []
+
+    # for eachuser in range(len(users)):
+    #     accountDetails.append({"username": users[eachuser].username, "password":
+    #                            users[eachuser].password, "time_registered": users[eachuser].time_registered})
+    # details["Users"] = accountDetails
+    # print(str(details))
     return render_template("admin.html", users=users)
 
 
@@ -112,13 +121,12 @@ def userDetails():
             except:
                 return render_template("registration.html", message="Fill all the details!")
     return "<h1>Please Register</h1>"
-@app.route("/review", methods=["POST", "GET"])
-def review():
+
+@app.route("/homepage", methods=["GET", "POST"])
+def saibabaMethod():
     book = bookreview("1439152802", "The Secret Keeper","Kate Morton", 2012)
     res = requests.get("https://www.goodreads.com/book/review_counts.json",
-                       params={"key": "2VIV9mRWiAq0OuKcOPiA", "isbns": book.isbn})
-                  
-  
+                    params={"key": "2VIV9mRWiAq0OuKcOPiA", "isbns": book.isbn})
     data = res.text
     parsed = json.loads(data)
     print(parsed)
@@ -126,5 +134,32 @@ def review():
     for i in parsed:
         for j in (parsed[i]):
             res = j
-    return render_template("review.html",book = book, res = res) 
-
+    # Variables for testing
+    bookisbn = book.isbn
+    user = "Akhil.alla2"
+    # Get all the reviews for the given book.
+    allreviews = review.query.filter_by(isbn=bookisbn).all()
+    if request.method == "POST":
+        rating = request.form.get("rating")
+        reviews = request.form.get("review")
+        isbn = book.isbn
+        timestamp = time.ctime(time.time())
+        title = book.title
+        username = "srinivas"
+        user = review(isbn=isbn, review=reviews, rating=rating, time_stamp=timestamp, title=title, username=username)
+        db.session.add(user)
+        db.session.commit()
+         # Get all the reviews for the given book.
+        allreviews = review.query.filter_by(isbn=bookisbn).all()
+        return render_template("review.html", res=res, book=book, review=allreviews)
+    else:
+        # database query to check if the user had given review to that paticular book.
+        rev = review.query.filter(review.isbn==bookisbn, review.username==user)
+        # print(json.parse(allreviews))
+        # for i in allreviews:
+        #     print(i.review)
+        # if review was not given then dispaly the book page with review button
+        if rev is None:
+            return render_template("review.html", book=book, review=allreviews, res=res) 
+        else:
+            return render_template("review.html", book=book, message="You reviewed this book!!", review=allreviews, res=res,property="none")
