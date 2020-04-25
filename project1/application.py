@@ -154,7 +154,7 @@ def saibabaMethod():
         return render_template("review.html", res=res, book=book, review=allreviews)
     else:
         # database query to check if the user had given review to that paticular book.
-        rev = review.query.filter(review.isbn==bookisbn, review.username==user)
+        rev = review.query.filter(review.isbn.like(bookisbn), review.username.like(user)).first()
         # print(json.parse(allreviews))
         # for i in allreviews:
         #     print(i.review)
