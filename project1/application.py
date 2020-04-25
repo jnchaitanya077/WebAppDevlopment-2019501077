@@ -108,7 +108,6 @@ def userDetails():
             try:
                 db.session.add(user)
                 db.session.commit()
-                session[userName] = request.form['username']
                 return render_template("user.html",  username=userName, message="Successfully Registered", name=firstName+" "+lastName)
 
             except:
