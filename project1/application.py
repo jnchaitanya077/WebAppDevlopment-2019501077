@@ -54,8 +54,16 @@ def userHome(user):
 
 @app.route("/admin")
 def allusers():
-    users = User.query.all()
 
+    users = User.query.all()
+    # details = {}
+    # accountDetails = []
+
+    # for eachuser in range(len(users)):
+    #     accountDetails.append({"username": users[eachuser].username, "password":
+    #                            users[eachuser].password, "time_registered": users[eachuser].time_registered})
+    # details["Users"] = accountDetails
+    # print(str(details))
     return render_template("admin.html", users=users)
 
 
@@ -119,8 +127,8 @@ def userDetails():
 def test():
 
     # Creating book object for testing purpose
-    book = bookreview("1451648537", "Steve Jobs",
-                      "Walter Isaacson", 2011)
+    book = bookreview("1439152802", "The Secret Keeper",
+                      "Kate Morton", 2012)
     # Get book details using goodreads api
     res = requests.get("https://www.goodreads.com/book/review_counts.json",
                        params={"key": "2VIV9mRWiAq0OuKcOPiA", "isbns": book.isbn})
@@ -138,15 +146,16 @@ def test():
     bookisbn = book.isbn
     user = "chaitu.krish4"
 
-    # database query to check if the user had given review to that paticular book
+    # database query to check if the user had given review to that paticular book.
     rev = review.query.filter(review.isbn.like(
         bookisbn), review.username.like(user)).first()
 
-    # Get all the reviews for the given book
-    # bookisbn = '%'+bookisbn+'%'
+    print(rev)
+
+    # Get all the reviews for the given book.
     allreviews = review.query.filter_by(isbn=bookisbn).all()
-    # print(rev.username, rev.title, rev.review)
-    # print(allreviews)
+    # print(json.parse(allreviews))
+
     for i in allreviews:
         print(i.review)
 
