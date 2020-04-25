@@ -47,14 +47,13 @@ def logout(username):
 @app.route("/home/<user>")
 def userHome(user):
     if user in session:
-        return redirect(url_for("search", user=user))
+        return render_template("search.html", user=user)
     return redirect(url_for('index'))
 
 
 @app.route("/admin")
 def allusers():
     users = User.query.all()
-
     return render_template("admin.html", users=users)
 
 
@@ -118,23 +117,18 @@ def userDetails():
 def search(user):
 
     if request.method == "GET":
-   
-        return render_template("search.html",user=user)
+        # return render_template("Search.html", user = user)
+        return redirect(url_for('index'))
 
     else: 
-
         res = request.form.get("find")
-
         res =  '%'+res+'%'
-
         result = books.query.filter(or_(books.title.ilike(res), books.author.ilike(res), books.isbn.ilike(res))).all()
-
-        return render_template("results.html", result = result,user=user)
+        return render_template("Search.html", result = result,user=user)
 
 
 
 @app.route("/bookpage/<user>/<isbn>")
 def bookpage(user,isbn):
-
     obj = books.query.filter_by(isbn=isbn).first()
     return render_template("bookpage.html",isbn=obj.title,user=user)
