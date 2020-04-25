@@ -52,10 +52,12 @@ def userHome(user):
     return redirect(url_for('index'))
 
 
-@app.route("/admin")
-def allusers():
-    users = User.query.all()
-    return render_template("admin.html", users=users)
+@app.route("/admin/<user>")
+def allusers(user):
+    if user in session:
+        users = User.query.all()
+        return render_template("admin.html", users=users)
+    return render_template('registration.html', message="Please login!!")
 
 
 @app.route("/auth", methods=["POST", "GET"])
