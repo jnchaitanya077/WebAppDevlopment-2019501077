@@ -2,13 +2,11 @@
 <html class="no-js">
 
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>{{book.title}}</title>
-    <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/books.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/review.css') }}" />
 
     <link href=" https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
@@ -29,6 +27,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
 
+
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
@@ -37,7 +36,12 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#">Link</a>
                 </li>
+
             </ul>
+            <form class="form-inline my-2 my-lg-0" action="{{ url_for('logout',username=username) }}">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Logout
+                </button>
+            </form>
         </div>
     </nav>
 
@@ -65,36 +69,63 @@
                     <td><b>Review Count:&nbsp&nbsp</b>{{res['reviews_count']}}</td>
                 </tr>
             </table>
-            <button style="display: {{property}};" type="button" class="btn btn-outline-success">Review</button>
 
         </div>
+
         <hr>
+
         <div class="reviews">
-            <p style="color:rgb(22, 233, 22);text-align:center;">{{message}}</p>
-            <h2 id="heading">Reviews</h2>
-
-            {% for i in review %}
-
-            <div class="review-body">
-
-                <p>
-                    <b>{{i.username}}</b> {{i.time_stamp}}<br>
-                    {{i.review}} </p>
-
-            </div>
-            <hr>
-            {% endfor %}
 
 
-        </div>
+            <body>
+                <div style="display:{{property}}" class="container">
+                    <form action="/bookpage" method="POST">
+                        <div class="rate">
 
+                            <h4 class="starhead">Rating</h4>
 
-    </div>
+                            <input type="radio" id="star5" name="rating" value="5" />
+                            <label for="star5" title="text">5 stars</label>
+                            <input type="radio" id="star4" name="rating" value="4" />
+                            <label for="star4" title="text">4 stars</label>
+                            <input type="radio" id="star3" name="rating" value="3" />
+                            <label for="star3" title="text">3 stars</label>
+                            <input type="radio" id="star2" name="rating" value="2" />
+                            <label for="star2" title="text">2 stars</label>
+                            <input type="radio" id="star1" name="rating" value="1" />
+                            <label for="star1" title="text">1 star</label>
 
+                        </div>
 
+                        <div id="text" class="row">
+                            <div class="col-75">
+                                <textarea id="Review" name="review" placeholder="Write your review.."
+                                    style="height:200px"></textarea>
+                            </div>
+                        </div>
 
+                        <div class="row">
+                            <input class="bttn" type="submit" value="Submit">
+                        </div>
 
+                    </form>
+                </div>
 
-</body>
+                <div class="reviews">
+                    <p style="color:rgb(22, 233, 22);text-align:center;">{{message}}</p>
+                    <h2 id="heading">Reviews</h2>
+
+                    {% for i in review %}
+                    <div class="review-body">
+                        <p>
+                            <b>{{i.username}}</b> {{i.time_stamp}}<br>
+                            {{i.review}}
+                        </p>
+                    </div>
+                    <hr>
+                    {% endfor %}
+
+                </div>
+            </body>
 
 </html>

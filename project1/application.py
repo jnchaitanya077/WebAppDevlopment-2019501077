@@ -48,22 +48,13 @@ def logout(username):
 @app.route("/home/<user>")
 def userHome(user):
     if user in session:
-        return render_template("user.html", username=user, message="Successfully logged in.", heading="Welcome back")
+        return redirect(url_for('test', username=user))
     return redirect(url_for('index'))
 
 
 @app.route("/admin")
 def allusers():
-
     users = User.query.all()
-    # details = {}
-    # accountDetails = []
-
-    # for eachuser in range(len(users)):
-    #     accountDetails.append({"username": users[eachuser].username, "password":
-    #                            users[eachuser].password, "time_registered": users[eachuser].time_registered})
-    # details["Users"] = accountDetails
-    # print(str(details))
     return render_template("admin.html", users=users)
 
 
@@ -123,43 +114,41 @@ def userDetails():
     return "<h1>Please Register</h1>"
 
 
-@app.route("/bookpage")
-def test():
+@app.route("/bookpage/<username>")
+def test(username):
 
-    # Creating book object for testing purpose
-    book = bookreview("1439152802", "The Secret Keeper",
-                      "Kate Morton", 2012)
-    # Get book details using goodreads api
-    res = requests.get("https://www.goodreads.com/book/review_counts.json",
-                       params={"key": "2VIV9mRWiAq0OuKcOPiA", "isbns": book.isbn})
+    user = username
+    # allow the user only if he in session
+    if user in session:
+        # Creating book object for testing purpose
+        book = bookreview("1439152802", "The Secret Keeper",
+                          "Kate Morton", 2012)
+        # Get book details using goodreads api
+        res = requests.get("https://www.goodreads.com/book/review_counts.json",
+                           params={"key": "2VIV9mRWiAq0OuKcOPiA", "isbns": book.isbn})
+        # Parsing the data
+        data = res.text
+        parsed = json.loads(data)
+        print(parsed)
+        res = {}
+        for i in parsed:
+            for j in (parsed[i]):
+                res = j
 
-    # Parsing the data
-    data = res.text
-    parsed = json.loads(data)
-    print(parsed)
-    res = {}
-    for i in parsed:
-        for j in (parsed[i]):
-            res = j
+        # Variables for testing
+        bookisbn = book.isbn
 
-    # Variables for testing
-    bookisbn = book.isbn
-    user = "chaitu.krish4"
+        # database query to check if the user had given review to that paticular book.
+        rev = review.query.filter(review.isbn.like(
+            bookisbn), review.username.like(user)).first()
+        # print(rev)
 
-    # database query to check if the user had given review to that paticular book.
-    rev = review.query.filter(review.isbn.like(
-        bookisbn), review.username.like(user)).first()
+        # Get all the reviews for the given book.
+        allreviews = review.query.filter_by(isbn=bookisbn).all()
 
-    print(rev)
-
-    # Get all the reviews for the given book.
-    allreviews = review.query.filter_by(isbn=bookisbn).all()
-    # print(json.parse(allreviews))
-
-    for i in allreviews:
-        print(i.review)
-
-    # if review was not given then dispaly the book page with review button
-    if rev is None:
-        return render_template("books.html", res=res, book=book, review=allreviews)
-    return render_template("books.html", message="You reviewed this book!!", book=book, review=allreviews, res=res, property="none")
+        # if review was not given then dispaly the book page with review button
+        if rev is None:
+            return render_template("books.html", res=res, book=book, review=allreviews, username=user)
+        return render_template("books.html", message="You reviewed this book!!", book=book, review=allreviews, res=res, property="none", username=user)
+    else:
+        return redirect(url_for('index'))
