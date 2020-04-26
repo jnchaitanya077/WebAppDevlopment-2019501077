@@ -48,7 +48,7 @@ def logout(username):
 @app.route("/home/<user>")
 def userHome(user):
     if user in session:
-        return redirect(url_for('test', username=user))
+        return render_template('Search.html', user=user)
     return redirect(url_for('index'))
 
 
