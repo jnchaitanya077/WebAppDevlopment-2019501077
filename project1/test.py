@@ -5,3 +5,4 @@ class bookreview:
         self.isbn = isbn
         self.title = title
         self.author = author
+        self.year = year

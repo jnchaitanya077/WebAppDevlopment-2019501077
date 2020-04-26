@@ -156,7 +156,7 @@ def test(username):
 
             # Get all the reviews for the given book.
             allreviews = review.query.filter_by(isbn=bookisbn).all()
-            return render_template("review.html", res=res, book=book, review=allreviews, property="none", message="You reviewed this book!!",username=username)
+            return render_template("review.html", res=res, book=book, review=allreviews, property="none", message="You reviewed this book!!", username=username)
         else:
             # database query to check if the user had given review to that paticular book.
             rev = review.query.filter(review.isbn.like(

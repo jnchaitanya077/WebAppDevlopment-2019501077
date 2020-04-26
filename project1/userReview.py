@@ -13,4 +13,3 @@ class review(db.Model):
     review = db.Column(db.String, nullable=False)
     time_stamp = db.Column(db.String, nullable=False)
     username = db.Column(db.String, nullable=False, primary_key=True)
-
