@@ -47,17 +47,17 @@
 
     <div class="container">
         <div class="clearfix">
-            <img src="http://covers.openlibrary.org/b/isbn/{{book.isbn}}-L.jpg" class="img2" alt={{book.isbn}}
+            <img src="http://covers.openlibrary.org/b/isbn/{{res['isbn']}}-L.jpg" class="img2" alt={{res['isbn']}}
                 width="300" height="400">
             <table id="tab">
                 <tr>
                     <thead>
-                        <h1>{{book.title}}</h1>
+                        <h1>{{res['title']}}</h1>
                     </thead>
 
                 </tr>
                 <tr>
-                    <td><b>ISBN:&nbsp&nbsp</b>{{book.isbn}}</td>
+                    <td><b>ISBN:&nbsp&nbsp</b>{{res['isbn']}}</td>
                     <td><b>Author:&nbsp&nbsp</b>{{book.author}}</td>
 
                 </tr>
@@ -77,55 +77,57 @@
         <div class="reviews">
 
 
-            <body>
-                <div style="display:{{property}}" class="container">
-                    <form action="/bookpage" method="POST">
-                        <div class="rate">
+            <div style="display:{{property}}" class="container">
+                <form action="{{url_for('bookpage',username=username,isbn=res['isbn'])}}" method="POST">
+                    <div class="rate">
 
-                            <h4 class="starhead">Rating</h4>
+                        <h4 class="starhead">Rating</h4>
 
-                            <input type="radio" id="star5" name="rating" value="5" />
-                            <label for="star5" title="text">5 stars</label>
-                            <input type="radio" id="star4" name="rating" value="4" />
-                            <label for="star4" title="text">4 stars</label>
-                            <input type="radio" id="star3" name="rating" value="3" />
-                            <label for="star3" title="text">3 stars</label>
-                            <input type="radio" id="star2" name="rating" value="2" />
-                            <label for="star2" title="text">2 stars</label>
-                            <input type="radio" id="star1" name="rating" value="1" />
-                            <label for="star1" title="text">1 star</label>
+                        <input type="radio" id="star5" name="rating" value="5" />
+                        <label for="star5" title="text">5 stars</label>
+                        <input type="radio" id="star4" name="rating" value="4" />
+                        <label for="star4" title="text">4 stars</label>
+                        <input type="radio" id="star3" name="rating" value="3" />
+                        <label for="star3" title="text">3 stars</label>
+                        <input type="radio" id="star2" name="rating" value="2" />
+                        <label for="star2" title="text">2 stars</label>
+                        <input type="radio" id="star1" name="rating" value="1" />
+                        <label for="star1" title="text">1 star</label>
 
-                        </div>
-
-                        <div id="text" class="row">
-                            <div class="col-75">
-                                <textarea id="Review" name="review" placeholder="Write your review.."
-                                    style="height:200px"></textarea>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <input class="bttn" type="submit" value="Submit">
-                        </div>
-
-                    </form>
-                </div>
-
-                <div class="reviews">
-                    <p style="color:rgb(22, 233, 22);text-align:center;">{{message}}</p>
-                    <h2 id="heading">Reviews</h2>
-
-                    {% for i in review %}
-                    <div class="review-body">
-                        <p>
-                            <b>{{i.username}}</b> {{i.time_stamp}}<br>
-                            {{i.review}}
-                        </p>
                     </div>
-                    <hr>
-                    {% endfor %}
 
+                    <div id="text" class="row">
+                        <div class="col-75">
+                            <textarea id="Review" name="review" placeholder="Write your review.."
+                                style="height:200px"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <input class="bttn" type="submit" value="Submit">
+                    </div>
+
+                </form>
+            </div>
+
+            <div class="reviews">
+                <p style="color:rgb(22, 233, 22);text-align:center;">{{message}}</p>
+                <h2 id="heading">Reviews</h2>
+
+                {% for i in review %}
+                <div class="review-body">
+                    <p>
+                        <b>{{i.username}}</b> {{i.time_stamp}}<br>
+                        {{i.review}}
+                    </p>
                 </div>
-            </body>
+                <hr>
+                {% endfor %}
+
+            </div>
+        </div>
+    </div>
+
+</body>
 
 </html>

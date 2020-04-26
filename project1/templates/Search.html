@@ -1,79 +1,79 @@
-<link href = "Search.css" rel = "stylesheet">
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
-
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Search</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
-  </head>
-  <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand" href="#">Book-Read</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-      </button>
+
+<head>
+  <title>Search</title>
+  <link href="Search.css" rel="stylesheet">
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+    integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
+    integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">Book-Read</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
 
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav mr-auto">
-              <li class="nav-item active">
-                  <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-              </li>
-              <li class="nav-item">
-                  <a class="nav-link" href="#">Link</a>
-              </li>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Link</a>
+        </li>
 
-          </ul>
-          <form class="form-inline my-2 my-lg-0" action="{{ url_for('logout',username=user) }}">
-              <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Logout</button>
-          </form>
-      </div>
+      </ul>
+      <form class="form-inline my-2 my-lg-0" action="{{ url_for('logout',username=user) }}">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Logout</button>
+      </form>
+    </div>
   </nav>
+  <div class="container">
     <div class="container">
-        <div class="container">
-            <div class="d-flex justify-content-center">
-              <div class="searchbar">
-                <form>
-                  <input class="search_input" type="text" name="find" placeholder="Search...">
-                  <button type="submit" class="btn btn-success" formaction="{{ url_for('search',user=user) }}" 
-                    formmethod = "POST">Search</button>
-                </form>
-              </div>
-            </div>
+      <div class="d-flex justify-content-center">
+        <div class="searchbar">
+          <form>
+            <input class="search_input" type="text" name="find" placeholder="Search...">
+            <button type="submit" class="btn btn-success" formaction="{{ url_for('search',user=user) }}"
+              formmethod="POST">Search</button>
+          </form>
         </div>
-        <h3 style="margin:20px;">Search Results</h3>
-        <table style = "text-align: center;" class="table">
-            <thead class="thead-dark">
-                <tr>
-                  <th scope="col">Book</th>
-                  <th scope="col">Isbn</th>
-                  <th scope="col">Title</th>
-                  <th scope="col">Author</th>
-                  <th scope="col">Year</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for book in result %}
-                <tr>
-                    <th scope="row"><img src="http://covers.openlibrary.org/b/isbn/{{book.isbn}}-M.jpg" class="img2" alt={{book.isbn}}
-                    width="100" height="150"></th>
-                    <td><a href ="{{url_for('bookpage',isbn=book.isbn,user=user)}}">{{book.isbn}}</a></td>
-                    <td>{{book.title}}</td>
-                    <td>{{book.author}}</td>
-                    <td>{{book.year}}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
       </div>
+    </div>
+    <h3 style="margin:20px;">Search Results</h3>
+    <table style="text-align: center;" class="table">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">Book</th>
+          <th scope="col">Isbn</th>
+          <th scope="col">Title</th>
+          <th scope="col">Author</th>
+          <th scope="col">Year</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for book in result %}
+        <tr>
+          <th scope="row"><img src="http://covers.openlibrary.org/b/isbn/{{book.isbn}}-M.jpg" class="img2"
+              alt={{book.isbn}} width="100" height="150"></th>
+          <td><a href="{{url_for('bookpage',isbn=book.isbn,username=user)}}">{{book.isbn}}</a></td>
+          <td>{{book.title}}</td>
+          <td>{{book.author}}</td>
+          <td>{{book.year}}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</body>
 
-    <!-- </tbody> -->
-    <!-- </table> -->
-  </body>
 </html>
