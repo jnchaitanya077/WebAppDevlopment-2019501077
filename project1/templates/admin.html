@@ -53,6 +53,34 @@
 
     </tbody>
     </table>
+
+    <!-- <button type="button" onclick="loadXMLDoc()">users</button>
+        <br><br>
+        <div id="demo"></div>
+
+
+        <script>
+            function loadXMLDoc() {
+                var xmlhttp = new XMLHttpRequest();
+                xmlhttp.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        var response = JSON.parse(this.responseText);
+                        var newWin = window.open(response);
+                        console.log(response)
+                        txt += "<table>"
+                        for (var x in response) {
+                            txt += "<tr><td>" + response[x].username + "</td><td>" + response[x].password +
+                                "</td><td>" +
+                                response[x].time_registered + "</td><tr>"
+                        }
+                        txt += "</table>"
+                        document.getElementById("demo").innerHTML = txt
+                    }
+                };
+                xmlhttp.open("GET", "/admin", true);
+                xmlhttp.send();
+            }
+        </script> -->
 </body>
 
 </html>

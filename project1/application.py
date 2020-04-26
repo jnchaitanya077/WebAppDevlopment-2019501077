@@ -1,11 +1,13 @@
 import os
 import time
-import sys
+import requests
+import json
+from test import bookreview
 
-from flask import Flask, session, render_template, request, redirect, url_for, escape
-from sqlalchemy import or_
+
+from flask import Flask, session, render_template, request, redirect, url_for
 from register import *
-from booktable import *
+from userReview import *
 
 
 
@@ -47,14 +49,16 @@ def logout(username):
 @app.route("/home/<user>")
 def userHome(user):
     if user in session:
-        return render_template("search.html", user=user)
+        return redirect(url_for('test', username=user))
     return redirect(url_for('index'))
 
 
-@app.route("/admin")
-def allusers():
-    users = User.query.all()
-    return render_template("admin.html", users=users)
+@app.route("/admin/<user>")
+def allusers(user):
+    if user in session:
+        users = User.query.all()
+        return render_template("admin.html", users=users)
+    return render_template('registration.html', message="Please login!!")
 
 
 @app.route("/auth", methods=["POST", "GET"])
@@ -105,13 +109,52 @@ def userDetails():
             try:
                 db.session.add(user)
                 db.session.commit()
-                session[userName] = request.form['username']
                 return render_template("user.html",  username=userName, message="Successfully Registered", name=firstName+" "+lastName)
 
             except:
                 return render_template("registration.html", message="Fill all the details!")
     return "<h1>Please Register</h1>"
 
+
+@app.route("/bookpage/<username>")
+def test(username):
+
+    user = username
+    # allow the user only if he in session
+    if user in session:
+        # Creating book object for testing purpose
+        book = bookreview("1439152802", "The Secret Keeper",
+                          "Kate Morton", 2012)
+        # Get book details using goodreads api
+        res = requests.get("https://www.goodreads.com/book/review_counts.json",
+                           params={"key": "2VIV9mRWiAq0OuKcOPiA", "isbns": book.isbn})
+        # Parsing the data
+        data = res.text
+        parsed = json.loads(data)
+        print(parsed)
+        res = {}
+        for i in parsed:
+            for j in (parsed[i]):
+                res = j
+
+        # Variables for testing
+        bookisbn = book.isbn
+
+        # database query to check if the user had given review to that paticular book.
+        rev = review.query.filter(review.isbn.like(
+            bookisbn), review.username.like(user)).first()
+        # print(rev)
+
+        # Get all the reviews for the given book.
+        allreviews = review.query.filter_by(isbn=bookisbn).all()
+
+        # if review was not given then dispaly the book page with review button
+        if rev is None:
+            return render_template("books.html", res=res, book=book, review=allreviews, username=user)
+        return render_template("books.html", message="You reviewed this book!!", book=book, review=allreviews, res=res, property="none", username=user)
+    else:
+        return redirect(url_for('index'))
+      
 @app.route("/search/<user>", methods=["POST", "GET"])
 
 def search(user):
@@ -128,7 +171,3 @@ def search(user):
 
 
 
-@app.route("/bookpage/<user>/<isbn>")
-def bookpage(user,isbn):
-    obj = books.query.filter_by(isbn=isbn).first()
-    return render_template("bookpage.html",isbn=obj.title,user=user)

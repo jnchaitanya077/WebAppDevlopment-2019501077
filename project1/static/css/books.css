@@ -1,0 +1,23 @@
+table {
+    padding-left: 50px;
+}
+
+.clearfix {
+    overflow: auto;
+}
+
+
+.container {
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    padding: 20px;
+}
+
+#heading {
+    margin-bottom: 30px;
+}
+
+.img2 {
+    float: left;
+    margin-right: 20px;
+}

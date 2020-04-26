@@ -38,8 +38,10 @@
                 </li>
 
             </ul>
-            <form class="form-inline my-2 my-lg-0" action="{{ url_for('logout',username=username) }}">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Logout</button>
+            <form class="form-inline my-2 my-lg-0" action="{{ url_for('index') }}">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Login
+                </button>
+
             </form>
         </div>
     </nav>
@@ -50,12 +52,9 @@
         {{message}}
     </div>
 
-    <h1 style="text-align: center;">{{heading}}, {{username}}</h1>
-
-
-    <h1>Successfully Registered, {{name}}</h1>
-    <h2>Username: {{user}}</h2>
-    <h2>Name: {{name}}</h2>
+    <h4>Username: {{user}}</h4>
+    <h4>Name: {{name}}</h4>
+    <p>Please <b>Login</b>.</p>
 
 
 </body>
