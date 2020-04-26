@@ -10,6 +10,7 @@ from register import *
 from userReview import *
 
 
+
 app = Flask(__name__)
 app.secret_key = 'any random string'
 
@@ -153,3 +154,20 @@ def test(username):
         return render_template("books.html", message="You reviewed this book!!", book=book, review=allreviews, res=res, property="none", username=user)
     else:
         return redirect(url_for('index'))
+      
+@app.route("/search/<user>", methods=["POST", "GET"])
+
+def search(user):
+
+    if request.method == "GET":
+        # return render_template("Search.html", user = user)
+        return redirect(url_for('index'))
+
+    else: 
+        res = request.form.get("find")
+        res =  '%'+res+'%'
+        result = books.query.filter(or_(books.title.ilike(res), books.author.ilike(res), books.isbn.ilike(res))).all()
+        return render_template("Search.html", result = result,user=user)
+
+
+
