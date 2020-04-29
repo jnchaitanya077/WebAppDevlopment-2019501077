@@ -43,6 +43,7 @@
       var special = 0
 
       if (password == "") {
+
         document.querySelector('.passmessage').innerHTML = 'Enter password.'
         // alert("password must be filled out");
         return false
@@ -66,18 +67,21 @@
         if (t >= 97 && t <= 122) {
           small++
         }
+        if (t == 42 || t == 64 || t == 46 || t == 95) {
+          special++
+        }
 
       }
 
-      if (t == 42 || t == 64 || t == 46 || t == 95) {
-        special++
-      }
-      if ((num + cap + small + special) >= 4) {
+
+      if (num >= 1 && cap >= 1 && small >= 1 && special >= 1) {
         return true
       } else {
-        // console.log(num + cap + small + special)
-        document.querySelector('.passmessage').innerHTML =
-          'Password should contain atleast one [A-Z],[a-z],[1-0],special characters.'
+        var msg = 'Password should contain atleast one [A-Z],[a-z],[1-0],special characters.'
+        console.log(num + cap + small + special)
+        document.querySelector('.passmessage').innerHTML = msg
+        // alert("reached")
+
         return false
       }
 
