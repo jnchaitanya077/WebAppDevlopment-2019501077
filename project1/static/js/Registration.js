@@ -92,6 +92,7 @@ function validateEmail(email) {
 
   // check that the dot is not at the end
   if (dot === e.length - 1) {
+    //g
     document.querySelector(".emailmessage").innerHTML = message;
     return false;
   }
