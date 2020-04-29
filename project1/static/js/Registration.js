@@ -72,6 +72,7 @@ function validatePassword(password) {
   }
 }
 
+//email validation
 function validateEmail(email) {
   var e = email;
   var parts = e.split("@"); //chaitu.krish4@gmail.com
