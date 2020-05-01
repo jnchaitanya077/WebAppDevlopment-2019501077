@@ -5,12 +5,37 @@
   <title>Search</title>
   <link href="Search.css" rel="stylesheet">
   <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-  <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+  <script>
+    function loadDoc() {
+      console.log("inside")
+      var xhttp = new XMLHttpRequest();
+      var sec = document.forms["res"]["find"].value
+      var path = "/api/search/"
+      xhttp.open("POST", path);
+      xhttp.setRequestHeader("Content-Type", "application/json");
+      xhttp.send(JSON.stringify({
+        "isbn": sec
+      }));
+      console.log("inside");
+      xhttp.onload = () => {
+        console.log("load")
+        var data = JSON.parse(xhttp.responseText)
+        console.log("--------------------------------------------------------")
+        console.log(data)
+        document.getElementById("demo").innerHTML = "hiiiiiii";
+
+      }
+
+
+    }
+  </script>
+
+  <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
     integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
-    integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+    integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous"> -->
 </head>
 
 <body>
@@ -41,16 +66,18 @@
     <div class="container">
       <div class="d-flex justify-content-center">
         <div class="searchbar">
-          <form>
+          <form name="res">
             <input class="search_input" type="text" name="find" placeholder="Search...">
-            <button type="submit" class="btn btn-success" formaction="{{ url_for('search',user=user) }}"
-              formmethod="POST">Search</button>
+            <button type="submit" class="btn btn-success" onclick="loadDoc()">Search</button>
           </form>
         </div>
       </div>
     </div>
     <h3 style="margin:20px;">Search Results</h3>
-    <table style="text-align: center;" class="table">
+
+    <p id="demo"></p>
+
+    <!-- <table style="text-align: center;" class="table">
       <thead class="thead-dark">
         <tr>
           <th scope="col">Book</th>
@@ -72,7 +99,7 @@
         </tr>
         {% endfor %}
       </tbody>
-    </table>
+    </table> -->
   </div>
 </body>
 
