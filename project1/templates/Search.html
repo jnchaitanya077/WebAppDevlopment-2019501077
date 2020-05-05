@@ -32,10 +32,6 @@
     }
   </script>
 
-  <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-    integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
-    integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous"> -->
 </head>
 
 <body>
@@ -62,6 +58,7 @@
       </form>
     </div>
   </nav>
+
   <div class="container">
     <div style="margin-top: 20px;margin-bottom: 30px;" class="container">
       <div class="d-flex justify-content-center">
@@ -74,7 +71,77 @@
       </div>
     </div>
 
+    <div class="hide-table">
+      <h3 style="margin:20px;">Search Results</h3>
+      <table style="text-align: center;" class="table">
+        <thead class="thead-dark">
+          <tr id="search">
+            <th scope="col">Book</th>
+            <th scope="col" id="isbn">Isbn</th>
+            <th scope="col">Title</th>
+            <th scope="col">Author</th>
+            <th scope="col">Year</th>
+          </tr>
+        </thead>
+        <tbody id="tb">
+        </tbody>
+      </table>
+    </div>
+
+    <h1 id="username" name="userName" style="display:none">{{user}}</h1>
+    <div class="container">
+
+      <div class="clearfix">
+      </div>
+      <hr>
+
+      <div>
+        <div style="display:none;" class="reviews">
+          <div class="container">
+            <form name="userRating">
+              <div class="rate">
+
+                <h4 class="starhead">Rating</h4>
+
+                <input type="radio" id="star5" name="rating" value="5" />
+                <label for="star5" title="text">5 stars</label>
+                <input type="radio" id="star4" name="rating" value="4" />
+                <label for="star4" title="text">4 stars</label>
+                <input type="radio" id="star3" name="rating" value="3" />
+                <label for="star3" title="text">3 stars</label>
+                <input type="radio" id="star2" name="rating" value="2" />
+                <label for="star2" title="text">2 stars</label>
+                <input type="radio" id="star1" name="rating" value="1" />
+                <label for="star1" title="text">1 star</label>
+
+              </div>
+
+              <div id="text" class="row">
+                <div class="col-75">
+                  <textarea id="Review" name="review" placeholder="Write your review.." style="height:200px"></textarea>
+                </div>
+              </div>
+
+              <div class="row">
+                <button class="bttn" type="submit" onclick="submitReview()">Submit</button>
+              </div>
+
+            </form>
+
+          </div>
+
+        </div>
+
+        <div class="reviews1">
+        </div>
+
+      </div>
+
+    </div>
+
   </div>
+
+  <!-- </div> -->
 </body>
 
 </html>
