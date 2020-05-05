@@ -131,41 +131,6 @@ def search(user):
         return render_template("Search.html", result=result, user=user)
 
 
-# @app.route("/api/search/", methods=["POST"])
-# def search_api():
-
-#     if request.method == "POST":
-#         var = request.json
-#         res = var["isbn"]
-#         res = '%'+res+'%'
-
-#         result = books.query.filter(or_(books.title.ilike(
-#             res), books.author.ilike(res), books.isbn.ilike(res))).all()
-
-#         if result is None:
-#             return jsonify({"error": "Book not found"}), 400
-
-#         book_ISBN = []
-#         book_TITLE = []
-#         book_AUTHOR = []
-#         book_YEAR = []
-
-#         for eachresult in result:
-#             book_ISBN.append(eachresult.isbn)
-#             book_TITLE.append(eachresult.title)
-#             book_AUTHOR.append(eachresult.author)
-#             book_YEAR.append(eachresult.year)
-
-#         dict = {"isbn": book_ISBN,
-#                 "title": book_TITLE,
-#                 "author": book_AUTHOR,
-#                 "year": book_YEAR}
-#         print("returning")
-#         print(dict)
-#         return jsonify(dict), 200
-#     return "<h1>Come again</h1>"
-#     # return jsonify(result)
-
 
 @app.route("/bookpage/<username>/<isbn>", methods=["POST", "GET"])
 def bookpage(username, isbn):
@@ -227,44 +192,55 @@ def bookpage(username, isbn):
         return redirect(url_for('index'))
 
 
-@app.route("/api/book/bookisbn=<isbn>")
-def book_api(isbn):
+@app.route("/api/book/", methods=["POST"])
+def book_api():
 
-    isbn = isbn
+    if request.method == "POST":
+        var = request.json
+        res = var["isbn"]
 
-    book = books.query.filter_by(isbn=isbn).first()
-    res = requests.get("https://www.goodreads.com/book/review_counts.json",
-                       params={"key": "2VIV9mRWiAq0OuKcOPiA", "isbns": isbn})
-    # Parsing the data
-    data = res.text
-    parsed = json.loads(data)
-    print(parsed)
-    res = {}
-    for i in parsed:
-        for j in (parsed[i]):
-            res = j
+        # if "isbn" in request.args:
+        #     res = request.args["isbn"]
+        # else:
+        #     return "Error: no search field provided."
 
-    allreviews = review.query.filter_by(isbn=isbn).all()
-    rew = []
-    time = []
-    usr = []
-    for rev in allreviews:
-        rew.append(rev.review)
-        time.append(rev.time_stamp)
-        usr.append(rev.username)
+        isbn = res
 
-    if book is None:
-        return jsonify({"error": "Book not found"}), 400
+        book = books.query.filter_by(isbn=isbn).first()
+        res = requests.get(
+            "https://www.goodreads.com/book/review_counts.json",
+            params={"key": "2VIV9mRWiAq0OuKcOPiA", "isbns": isbn},
+        )
+        # Parsing the data
+        data = res.text
+        parsed = json.loads(data)
+        print(parsed)
+        res = {}
+        for i in parsed:
+            for j in parsed[i]:
+                res = j
 
-    dict = {
-        "isbn": isbn,
-        "title": book.title,
-        "author": book.author,
-        "year": book.year,
-        "average_rating": res['average_rating'],
-        "average_reviewcount": res['reviews_count'],
-        "review": rew,
-        "time_stamp": time,
-        "username": usr
-    }
-    return jsonify(dict), 200
+        allreviews = review.query.filter_by(isbn=isbn).all()
+        rew = []
+        time = []
+        usr = []
+        for rev in allreviews:
+            rew.append(rev.review)
+            time.append(rev.time_stamp)
+            usr.append(rev.username)
+
+        if book is None:
+            return jsonify({"error": "Book not found"}), 400
+
+        dict = {
+            "isbn": isbn,
+            "title": book.title,
+            "author": book.author,
+            "year": book.year,
+            "average_rating": res["average_rating"],
+            "average_reviewcount": res["reviews_count"],
+            "review": rew,
+            "time_stamp": time,
+            "username": usr,
+        }
+        return jsonify(dict), 200
