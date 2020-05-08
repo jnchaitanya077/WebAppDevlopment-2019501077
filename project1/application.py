@@ -131,7 +131,6 @@ def search(user):
         return render_template("Search.html", result=result, user=user)
 
 
-
 @app.route("/bookpage/<username>/<isbn>", methods=["POST", "GET"])
 def bookpage(username, isbn):
 
@@ -198,12 +197,6 @@ def book_api():
     if request.method == "POST":
         var = request.json
         res = var["isbn"]
-
-        # if "isbn" in request.args:
-        #     res = request.args["isbn"]
-        # else:
-        #     return "Error: no search field provided."
-
         isbn = res
 
         book = books.query.filter_by(isbn=isbn).first()
@@ -211,6 +204,7 @@ def book_api():
             "https://www.goodreads.com/book/review_counts.json",
             params={"key": "2VIV9mRWiAq0OuKcOPiA", "isbns": isbn},
         )
+
         # Parsing the data
         data = res.text
         parsed = json.loads(data)
@@ -244,3 +238,8 @@ def book_api():
             "username": usr,
         }
         return jsonify(dict), 200
+
+
+@app.teardown_appcontext
+def shutdown_session(exception=None):
+    db.session.remove()

@@ -3,89 +3,44 @@
 
 <head>
   <title>Search</title>
-  <link href="Search.css" rel="stylesheet">
-  <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+  <link href="Search.css" rel="stylesheet" />
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css" />
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
   <script>
-    var lst = []
-    var username
-    var bookisbn
-
-
-    function loadDoc() {
-      let request = new XMLHttpRequest();
-      var res = document.forms['res']['find'].value;
-      console.log(res)
-      // var url = "http//:127.0.0.1:5000/api/search/" + "?" + "search=" + res
-      request.open("POST", "/api/search/");
-      request.setRequestHeader("Content-Type", "application/json");
-      request.send(JSON.stringify({
-        "search": res
-      }));
-      request.onload = () => {
-
-        if (request.status === 200) {
-          console.log("entered3")
-          var data = JSON.parse(request.responseText)
-          console.log(data)
-          let str = ""
-          lst = []
-
-
-
-          for (let i = 0; i < data["author"].length; i++) {
-            var a =
-              `<img src="http://covers.openlibrary.org/b/isbn/${data["isbn"][i]}-M.jpg" width = "100" height = "150" >`
-            console.log(a)
-            str = str + "<tr>" + "<td>" + a + "</td>" +
-              "<td>" + "<a href=javascript:bookPage(" + i + ")>" + data["isbn"][i] + "</a>" + "</td>" +
-              "<td>" + data["title"][i] + "</td>" +
-              "<td>" + data["author"][i] + "</td>" +
-              "<td>" + data["year"][i] + "</td>" + "</tr>"
-            lst.push(data["isbn"][i])
-            console.log(lst)
-
-          }
-          document.getElementById("tb").innerHTML = str;
-
-        } else {
-          console.log(`error ${request.status} ${request.statusText}`)
-        }
-
-      }
-      event.preventDefault()
-      return false
-    }
+    //Global variables
+    var lst = [];
+    var username;
+    var bookisbn;
 
     function bookPage(isbn) {
-      let myElement = document.querySelector(".hide-table");
-      myElement.style.display = "none";
+      //Setting the table display property to None.
+      // let myElement = document.querySelector(".hide-table");
+      // myElement.style.display = "none";
 
-
-      var usr = document.getElementById("username").innerHTML
+      var usr = document.getElementById("username").innerHTML;
       console.log(usr)
-      var isbn = lst[isbn]
-      // update global
-      username = usr
-      bookisbn = isbn
+      // var isbn = lst[isbn]
 
-      console.log(isbn)
+      // update global
+      username = usr;
+      bookisbn = isbn;
+      console.log(isbn);
+
       let request = new XMLHttpRequest();
       request.open("POST", "/api/book/");
       request.setRequestHeader("Content-Type", "application/json");
-      request.send(JSON.stringify({
-        "isbn": isbn
-      }));
+      request.send(JSON.stringify({ isbn: isbn, }));
+
       request.onload = () => {
         if (request.status === 200) {
-          var data = JSON.parse(request.responseText)
-          console.log(data)
+          var data = JSON.parse(request.responseText);
+          console.log(data);
 
+          let str = "";
 
-          let str = ""
-
-          str = str +
+          str =
+            str +
             `<img src="http://covers.openlibrary.org/b/isbn/${isbn}-L.jpg" width = "300" height = "400" class="img2" >` +
             `<table id="tab">
           <tr>
@@ -100,60 +55,62 @@
 
           </tr>
           <tr>
-            <td><b>Rating:&nbsp&nbsp</b>${data['average_rating']}</td>
+            <td><b>Rating:&nbsp&nbsp</b>${data["average_rating"]}</td>
             <td><b>Year Published:&nbsp&nbsp</b>${data["year"]}</td>
           </tr>
           <tr>
-            <td><b>Review Count:&nbsp&nbsp</b>${data['average_reviewcount']}</td>
+            <td><b>Review Count:&nbsp&nbsp</b>${data["average_reviewcount"]}</td>
           </tr>
-        </table> `
-
+        </table> `;
 
           document.querySelector(".clearfix").innerHTML = str;
-          var msg = ""
-          var flag = false
+          var msg = "";
+          var flag = false;
+
+          //check if the user has already given review or not.
           for (let i = 0; i < data["username"].length; i++) {
             if (data["username"][i] === usr) {
-              msg = "You have already reviewed this book. "
+              msg = "You have already reviewed this book. ";
               let reviewSection = document.querySelector(".reviews");
               reviewSection.style.display = "none";
-              flag = true
-              console.log(flag)
+              flag = true;
+              console.log(flag);
             }
           }
 
+          //if review was not gives display review section.
           if (flag === false) {
             let reviewSection = document.querySelector(".reviews");
             reviewSection.style.display = "block";
-
           }
 
-          let rev_str = ""
-
+          let rev_str = "";
+          //display all the reviews for that book.
           for (let i = 0; i < data["review"].length; i++) {
-            rev_str = rev_str + `<div class="review-body">
-            <p>
-              <b>${ data["username"][i]}</b> ${data["time_stamp"][i]}<br>
-                ${ data["review"][i]}
-            </p>
-          </div>
-            <hr>`
-
+            rev_str = rev_str + `<div class="review-body"><p>
+              <b>${data["username"][i]}</b> 
+              ${data["time_stamp"][i]}<br>
+              ${data["review"][i]}</p>
+            </div>
+            <hr>`;
           }
 
-          let all_rev = ""
-          all_rev = all_rev +
-            `<p style="color:rgb(22, 233, 22);text-align:center;">${msg}</p>
-          <h2 id="heading">Reviews</h2>` + rev_str
-
-          document.querySelector(".reviews1").innerHTML = all_rev
-
+          let all_rev = "";
+          all_rev = all_rev + `<p style="color:rgb(22, 233, 22);text-align:center;">${msg}</p> 
+          <h2 id="heading">Reviews</h2>` + rev_str;
+          document.querySelector(".reviews1").innerHTML = all_rev;
         }
-
-      }
+      };
     }
-  </script>
 
+    //Testing purpose
+    window.onload = function () {
+      bookPage("1451648537");
+      // bookPage(1592243002);
+    };
+
+
+  </script>
 </head>
 
 <body>
@@ -164,7 +121,6 @@
       <span class="navbar-toggler-icon"></span>
     </button>
 
-
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
@@ -173,56 +129,39 @@
         <li class="nav-item">
           <a class="nav-link" href="#">Link</a>
         </li>
-
       </ul>
       <form class="form-inline my-2 my-lg-0" action="{{ url_for('logout',username=user) }}">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Logout</button>
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+          {{user}}&nbsp&nbspLogout
+        </button>
       </form>
     </div>
   </nav>
 
   <div class="container">
-    <div style="margin-top: 20px;margin-bottom: 30px;" class="container">
+    <div style="margin-top: 20px; margin-bottom: 30px;" class="container">
       <div class="d-flex justify-content-center">
         <div class="searchbar">
           <form name="res">
-            <input class="search_input" type="text" name="find" placeholder="Search...">
-            <button type="submit" class="btn btn-success" onclick="loadDoc()">Search</button>
+            <input class="search_input" type="text" name="find" placeholder="Search..." />
+            <button type="submit" class="btn btn-success" onclick="loadDoc()">
+              Search
+            </button>
           </form>
         </div>
       </div>
     </div>
 
-    <div class="hide-table">
-      <h3 style="margin:20px;">Search Results</h3>
-      <table style="text-align: center;" class="table">
-        <thead class="thead-dark">
-          <tr id="search">
-            <th scope="col">Book</th>
-            <th scope="col" id="isbn">Isbn</th>
-            <th scope="col">Title</th>
-            <th scope="col">Author</th>
-            <th scope="col">Year</th>
-          </tr>
-        </thead>
-        <tbody id="tb">
-        </tbody>
-      </table>
-    </div>
-
-    <h1 id="username" name="userName" style="display:none">{{user}}</h1>
+    <h1 id="username" name="userName" style="display: none;">{{user}}</h1>
     <div class="container">
-
-      <div class="clearfix">
-      </div>
-      <hr>
+      <div class="clearfix"></div>
+      <hr />
 
       <div>
-        <div style="display:none;" class="reviews">
+        <div style="display: none;" class="reviews">
           <div class="container">
             <form name="userRating">
               <div class="rate">
-
                 <h4 class="starhead">Rating</h4>
 
                 <input type="radio" id="star5" name="rating" value="5" />
@@ -235,32 +174,27 @@
                 <label for="star2" title="text">2 stars</label>
                 <input type="radio" id="star1" name="rating" value="1" />
                 <label for="star1" title="text">1 star</label>
-
               </div>
 
               <div id="text" class="row">
                 <div class="col-75">
-                  <textarea id="Review" name="review" placeholder="Write your review.." style="height:200px"></textarea>
+                  <textarea id="Review" name="review" placeholder="Write your review.."
+                    style="height: 200px;"></textarea>
                 </div>
               </div>
 
               <div class="row">
-                <button class="bttn" type="submit" onclick="submitReview()">Submit</button>
+                <button class="bttn" type="submit" onclick="submitReview()">
+                  Submit
+                </button>
               </div>
-
             </form>
-
           </div>
-
         </div>
 
-        <div class="reviews1">
-        </div>
-
+        <div class="reviews1"></div>
       </div>
-
     </div>
-
   </div>
 
   <!-- </div> -->
