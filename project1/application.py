@@ -4,7 +4,7 @@ import requests
 import json
 from test import bookreview
 from booktable import *
-from flask import Flask, session, render_template, request, redirect, url_for
+from flask import Flask, session, render_template, request, redirect, url_for,jsonify
 from register import *
 from userReview import *
 from sqlalchemy import or_
@@ -94,7 +94,6 @@ def userDetails():
         password = request.form.get("password")
         gender = request.form.get("gender")
         email = request.form.get("email")
-
         # check if user existed or not
         userData = User.query.filter_by(email=email).first()
 
@@ -191,3 +190,74 @@ def bookpage(username, isbn):
             return render_template("books.html", book=book, message="You reviewed this book!!", review=allreviews, res=res, property="none", username=user1)
     else:
         return redirect(url_for('index'))
+@app.route("/api/submit_review/", methods=["POST"])
+def review_api():
+    if request.method == "POST":
+
+        var = request.json
+        print("-------------------", var)
+        isbn = var["isbn"]
+        username = var["username"]
+        rating = var["rating"]
+        reviews = var["reviews"]
+        print(isbn, username, rating, reviews)
+
+        # if "username" and "isbn" in request.args:
+        #     username = request.args["username"]
+        #     isbn = request.args["isbn"]
+        #     rating = request.args["rating"]
+        #     reviews = request.args["review"]
+        # else:
+        #     return "Error: no isbn/username/rating/review/ field provided"
+
+        # check if the paticular user given review before
+        rev_From_db = review.query.filter(
+            review.isbn.like(isbn), review.username.like(username)
+        ).first()
+        print("first", str(rev_From_db))
+
+        # if the user doesnt give the review for that book
+        if rev_From_db is None:
+
+            try:
+                # bring the book details
+                book = books.query.filter_by(isbn=isbn).first()
+                print("book", str(book))
+            except:
+                message = "Enter valid ISBN"
+                return jsonify(message), 404
+
+            timestamp = time.ctime(time.time())
+            title = book.title
+            user = review(
+                isbn=isbn,
+                review=reviews,
+                rating=rating,
+                time_stamp=timestamp,
+                title=title,
+                username=username,
+            )
+            db.session.add(user)
+            db.session.commit()
+
+            allreviews = review.query.filter_by(isbn=isbn).all()
+            rew = []
+            timeStamp = []
+            usr = []
+            for rev in allreviews:
+                rew.append(rev.review)
+                timeStamp.append(rev.time_stamp)
+                usr.append(rev.username)
+
+            dict = {
+                "isbn": isbn,
+                "review": rew,
+                "time_stamp": timeStamp,
+                "username": usr,
+                "message": "You reviewed this book.",
+            }
+
+            return jsonify(dict), 200
+        else:
+            dict = {"message": "You already reviewed this book."}
+            return jsonify(dict), 200
