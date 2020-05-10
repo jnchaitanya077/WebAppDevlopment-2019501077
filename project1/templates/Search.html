@@ -3,14 +3,95 @@
 
 <head>
   <title>Search</title>
-  <link href="Search.css" rel="stylesheet">
-  <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-  <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+  <link href="Search.css" rel="stylesheet" />
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css" />
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-    integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
-    integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+  <script>
+    //Global variables
+    var lst = [];
+    var username;
+    var bookisbn;
+
+    function submitReview(isbn) {
+      rating = document.forms["userRating"]["rating"].value
+      rev = document.forms["userRating"]["review"].value
+      console.log(username)
+      console.log(bookisbn)
+      console.log(rating)
+      console.log(rev)
+
+      let request = new XMLHttpRequest();
+      request.open("POST", "/api/submit_review/");
+      request.setRequestHeader("Content-Type", "application/json");
+      request.send(JSON.stringify({
+        "username": username,
+        "isbn": bookisbn,
+        "rating": rating,
+        "reviews": rev
+      }));
+      request.onload = () => {
+        if (request.status === 200) {
+          var data = JSON.parse(request.responseText)
+          console.log(data)
+          setTimeout(function () {
+        
+          }, 2000);
+
+          var msg = ""
+          var flag = false
+          for (let i = 0; i < data["username"].length; i++) {
+            if (data["username"][i] === usr) {
+              msg = "You have already reviewed this book. "
+              let reviewSection = document.querySelector(".reviews");
+              reviewSection.style.display = "none";
+              flag = true
+              console.log(flag)
+            }
+          }
+
+          if (flag === false) {
+            let reviewSection = document.querySelector(".reviews");
+            reviewSection.style.display = "block";
+
+          }
+          var usr = document.getElementById("username").innerHTML
+          let rev_str = ""
+
+          for (let i = 0; i < data["review"].length; i++) {
+            rev_str = rev_str + `<div class="review-body">
+            <p>
+              <b>${ data["username"][i]}</b> ${data["time_stamp"][i]}<br>
+                ${ data["review"][i]}
+            </p>
+          </div>
+            <hr>`
+
+          }
+
+          let all_rev = ""
+          all_rev = all_rev +
+            `<p style="color:rgb(22, 233, 22);text-align:center;">${msg}</p>
+          <h2 id="heading">Reviews</h2>` + rev_str
+
+          document.querySelector(".reviews1").innerHTML = all_rev
+
+
+
+
+        }
+      }
+      event.preventDefault()
+      return false
+    }
+      //Testing purpose
+    window.onload = function () {
+      // submitReview("1451648537");
+      submitReview("1592243002");
+    };
+
+
+  </script>
 </head>
 
 <body>
@@ -21,7 +102,6 @@
       <span class="navbar-toggler-icon"></span>
     </button>
 
-
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
@@ -30,50 +110,75 @@
         <li class="nav-item">
           <a class="nav-link" href="#">Link</a>
         </li>
-
       </ul>
       <form class="form-inline my-2 my-lg-0" action="{{ url_for('logout',username=user) }}">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Logout</button>
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+          {{user}}&nbsp&nbspLogout
+        </button>
       </form>
     </div>
   </nav>
+
   <div class="container">
-    <div class="container">
+    <div style="margin-top: 20px; margin-bottom: 30px;" class="container">
       <div class="d-flex justify-content-center">
         <div class="searchbar">
-          <form>
-            <input class="search_input" type="text" name="find" placeholder="Search...">
-            <button type="submit" class="btn btn-success" formaction="{{ url_for('search',user=user) }}"
-              formmethod="POST">Search</button>
+          <form name="res">
+            <input class="search_input" type="text" name="find" placeholder="Search..." />
+            <button type="submit" class="btn btn-success" onclick="loadDoc()">
+              Search
+            </button>
           </form>
         </div>
       </div>
     </div>
-    <h3 style="margin:20px;">Search Results</h3>
-    <table style="text-align: center;" class="table">
-      <thead class="thead-dark">
-        <tr>
-          <th scope="col">Book</th>
-          <th scope="col">Isbn</th>
-          <th scope="col">Title</th>
-          <th scope="col">Author</th>
-          <th scope="col">Year</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for book in result %}
-        <tr>
-          <th scope="row"><img src="http://covers.openlibrary.org/b/isbn/{{book.isbn}}-M.jpg" class="img2"
-              alt={{book.isbn}} width="100" height="150"></th>
-          <td><a href="{{url_for('bookpage',isbn=book.isbn,username=user)}}">{{book.isbn}}</a></td>
-          <td>{{book.title}}</td>
-          <td>{{book.author}}</td>
-          <td>{{book.year}}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+
+    <h1 id="username" name="userName" style="display: none;">{{user}}</h1>
+    <div class="container">
+      <div class="clearfix"></div>
+      <hr />
+
+      <div>
+        <div style="display: none;" class="reviews">
+          <div class="container">
+            <form name="userRating">
+              <div class="rate">
+                <h4 class="starhead">Rating</h4>
+
+                <input type="radio" id="star5" name="rating" value="5" />
+                <label for="star5" title="text">5 stars</label>
+                <input type="radio" id="star4" name="rating" value="4" />
+                <label for="star4" title="text">4 stars</label>
+                <input type="radio" id="star3" name="rating" value="3" />
+                <label for="star3" title="text">3 stars</label>
+                <input type="radio" id="star2" name="rating" value="2" />
+                <label for="star2" title="text">2 stars</label>
+                <input type="radio" id="star1" name="rating" value="1" />
+                <label for="star1" title="text">1 star</label>
+              </div>
+
+              <div id="text" class="row">
+                <div class="col-75">
+                  <textarea id="Review" name="review" placeholder="Write your review.."
+                    style="height: 200px;"></textarea>
+                </div>
+              </div>
+
+              <div class="row">
+                <button class="bttn" type="submit" onclick="submitReview()">
+                  Submit
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div class="reviews1"></div>
+      </div>
+    </div>
   </div>
+
+  <!-- </div> -->
 </body>
 
 </html>
