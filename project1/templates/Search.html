@@ -1,203 +1,136 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <title>Search</title>
+    <link href="Search.css" rel="stylesheet" />
+    <link
+      href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
+      rel="stylesheet"
+      id="bootstrap-css"
+    />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="{{ url_for('static', filename='js/singlePage.js') }}"></script>
+  </head>
 
-<head>
-  <title>Search</title>
-  <link href="Search.css" rel="stylesheet" />
-  <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css" />
-  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-  <script>
-    //Global variables
-    var lst = [];
-    var username;
-    var bookisbn;
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="#">Book-Read</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-    function bookPage(isbn) {
-      //Setting the table display property to None.
-      // let myElement = document.querySelector(".hide-table");
-      // myElement.style.display = "none";
-
-      var usr = document.getElementById("username").innerHTML;
-      console.log(usr)
-      // var isbn = lst[isbn]
-
-      // update global
-      username = usr;
-      bookisbn = isbn;
-      console.log(isbn);
-
-      let request = new XMLHttpRequest();
-      request.open("POST", "/api/book/");
-      request.setRequestHeader("Content-Type", "application/json");
-      request.send(JSON.stringify({ isbn: isbn, }));
-
-      request.onload = () => {
-        if (request.status === 200) {
-          var data = JSON.parse(request.responseText);
-          console.log(data);
-
-          let str = "";
-
-          str =
-            str +
-            `<img src="http://covers.openlibrary.org/b/isbn/${isbn}-L.jpg" width = "300" height = "400" class="img2" >` +
-            `<table id="tab">
-          <tr>
-            <thead>
-              <h1>${data["title"]}</h1>
-            </thead>
-
-          </tr>
-          <tr>
-            <td class="isbn"><b>ISBN:&nbsp&nbsp</b>${isbn}</td>
-            <td><b>Author:&nbsp&nbsp</b>${data["author"]}</td>
-
-          </tr>
-          <tr>
-            <td><b>Rating:&nbsp&nbsp</b>${data["average_rating"]}</td>
-            <td><b>Year Published:&nbsp&nbsp</b>${data["year"]}</td>
-          </tr>
-          <tr>
-            <td><b>Review Count:&nbsp&nbsp</b>${data["average_reviewcount"]}</td>
-          </tr>
-        </table> `;
-
-          document.querySelector(".clearfix").innerHTML = str;
-          var msg = "";
-          var flag = false;
-
-          //check if the user has already given review or not.
-          for (let i = 0; i < data["username"].length; i++) {
-            if (data["username"][i] === usr) {
-              msg = "You have already reviewed this book. ";
-              let reviewSection = document.querySelector(".reviews");
-              reviewSection.style.display = "none";
-              flag = true;
-              console.log(flag);
-            }
-          }
-
-          //if review was not gives display review section.
-          if (flag === false) {
-            let reviewSection = document.querySelector(".reviews");
-            reviewSection.style.display = "block";
-          }
-
-          let rev_str = "";
-          //display all the reviews for that book.
-          for (let i = 0; i < data["review"].length; i++) {
-            rev_str = rev_str + `<div class="review-body"><p>
-              <b>${data["username"][i]}</b> 
-              ${data["time_stamp"][i]}<br>
-              ${data["review"][i]}</p>
-            </div>
-            <hr>`;
-          }
-
-          let all_rev = "";
-          all_rev = all_rev + `<p style="color:rgb(22, 233, 22);text-align:center;">${msg}</p> 
-          <h2 id="heading">Reviews</h2>` + rev_str;
-          document.querySelector(".reviews1").innerHTML = all_rev;
-        }
-      };
-    }
-
-    //Testing purpose
-    window.onload = function () {
-      bookPage("1451648537");
-      // bookPage(1592243002);
-    };
-
-
-  </script>
-</head>
-
-<body>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">Book-Read</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Link</a>
-        </li>
-      </ul>
-      <form class="form-inline my-2 my-lg-0" action="{{ url_for('logout',username=user) }}">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
-          {{user}}&nbsp&nbspLogout
-        </button>
-      </form>
-    </div>
-  </nav>
-
-  <div class="container">
-    <div style="margin-top: 20px; margin-bottom: 30px;" class="container">
-      <div class="d-flex justify-content-center">
-        <div class="searchbar">
-          <form name="res">
-            <input class="search_input" type="text" name="find" placeholder="Search..." />
-            <button type="submit" class="btn btn-success" onclick="loadDoc()">
-              Search
-            </button>
-          </form>
-        </div>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#"
+              >Home <span class="sr-only">(current)</span></a
+            >
+          </li>
+        </ul>
+        <form
+          class="form-inline my-2 my-lg-0"
+          action="{{ url_for('logout',username=user) }}"
+        >
+          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+            {{user}}&nbsp&nbspLogout
+          </button>
+        </form>
       </div>
-    </div>
+    </nav>
 
-    <h1 id="username" name="userName" style="display: none;">{{user}}</h1>
     <div class="container">
-      <div class="clearfix"></div>
-      <hr />
-
-      <div>
-        <div style="display: none;" class="reviews">
-          <div class="container">
-            <form name="userRating">
-              <div class="rate">
-                <h4 class="starhead">Rating</h4>
-
-                <input type="radio" id="star5" name="rating" value="5" />
-                <label for="star5" title="text">5 stars</label>
-                <input type="radio" id="star4" name="rating" value="4" />
-                <label for="star4" title="text">4 stars</label>
-                <input type="radio" id="star3" name="rating" value="3" />
-                <label for="star3" title="text">3 stars</label>
-                <input type="radio" id="star2" name="rating" value="2" />
-                <label for="star2" title="text">2 stars</label>
-                <input type="radio" id="star1" name="rating" value="1" />
-                <label for="star1" title="text">1 star</label>
-              </div>
-
-              <div id="text" class="row">
-                <div class="col-75">
-                  <textarea id="Review" name="review" placeholder="Write your review.."
-                    style="height: 200px;"></textarea>
-                </div>
-              </div>
-
-              <div class="row">
-                <button class="bttn" type="submit" onclick="submitReview()">
-                  Submit
-                </button>
-              </div>
+      <div style="margin-top: 20px; margin-bottom: 30px;" class="container">
+        <div class="d-flex justify-content-center">
+          <div class="searchbar">
+            <form name="res">
+              <input
+                class="search_input"
+                type="text"
+                name="find"
+                placeholder="Search..."
+              />
+              <button type="submit" class="btn btn-success" onclick="loadDoc()">
+                Search
+              </button>
             </form>
           </div>
         </div>
+      </div>
 
-        <div class="reviews1"></div>
+      <div class="hide-table">
+        <h3 style="margin: 20px;">Search Results</h3>
+        <table style="text-align: center;" class="table">
+          <thead class="thead-dark">
+            <tr id="search">
+              <th scope="col">Book</th>
+              <th scope="col" id="isbn">Isbn</th>
+              <th scope="col">Title</th>
+              <th scope="col">Author</th>
+              <th scope="col">Year</th>
+            </tr>
+          </thead>
+          <tbody id="tb"></tbody>
+        </table>
+      </div>
+
+      <h1 id="username" name="userName" style="display: none;">{{user}}</h1>
+      <div class="container">
+        <div class="clearfix"></div>
+        <hr />
+
+        <div>
+          <div style="display: none;" class="reviews">
+            <div class="container">
+              <form name="userRating">
+                <div class="rate">
+                  <h4 class="starhead">Rating</h4>
+
+                  <input type="radio" id="star5" name="rating" value="5" />
+                  <label for="star5" title="text">5 stars</label>
+                  <input type="radio" id="star4" name="rating" value="4" />
+                  <label for="star4" title="text">4 stars</label>
+                  <input type="radio" id="star3" name="rating" value="3" />
+                  <label for="star3" title="text">3 stars</label>
+                  <input type="radio" id="star2" name="rating" value="2" />
+                  <label for="star2" title="text">2 stars</label>
+                  <input type="radio" id="star1" name="rating" value="1" />
+                  <label for="star1" title="text">1 star</label>
+                </div>
+
+                <div id="text" class="row">
+                  <div class="col-75">
+                    <textarea
+                      id="Review"
+                      name="review"
+                      placeholder="Write your review.."
+                      style="height: 200px;"
+                    ></textarea>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <button class="bttn" type="submit" onclick="submitReview()">
+                    Submit
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <div class="reviews1"></div>
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- </div> -->
-</body>
-
+    <!-- </div> -->
+  </body>
 </html>

@@ -7,8 +7,10 @@ from booktable import *
 from flask import Flask, session, render_template, request, redirect, url_for, jsonify
 from register import *
 from userReview import *
-from sqlalchemy import or_
+from sqlalchemy import or_, create_engine
 
+
+e = create_engine("postgres://ndfmrjdatfaoqo:0111135abc2d5c2e69a2368504f8ebed18591446e26a19968b0a7d05ee16a889@ec2-34-197-212-240.compute-1.amazonaws.com:5432/d3chm4hvsesls3", pool_recycle=3600)
 
 app = Flask(__name__)
 app.secret_key = 'any random string'
@@ -191,6 +193,44 @@ def bookpage(username, isbn):
         return redirect(url_for('index'))
 
 
+@app.route("/api/search/", methods=["POST"])
+def search_api():
+
+    if request.method == "POST":
+        var = request.json
+
+        res = var["search"]
+        res = "%" + res + "%"
+
+        result = books.query.filter(or_(books.title.ilike(
+            res), books.author.ilike(res), books.isbn.ilike(res))).all()
+
+        if result is None:
+            return jsonify({"error": "Book not found"}), 400
+
+        book_ISBN = []
+        book_TITLE = []
+        book_AUTHOR = []
+        book_YEAR = []
+
+        for eachresult in result:
+            book_ISBN.append(eachresult.isbn)
+            book_TITLE.append(eachresult.title)
+            book_AUTHOR.append(eachresult.author)
+            book_YEAR.append(eachresult.year)
+
+        dict = {
+            "isbn": book_ISBN,
+            "title": book_TITLE,
+            "author": book_AUTHOR,
+            "year": book_YEAR,
+        }
+        print("returning")
+        print(dict)
+        return jsonify(dict), 200
+    return "<h1>Come again</h1>"
+
+
 @app.route("/api/book/", methods=["POST"])
 def book_api():
 
@@ -238,6 +278,79 @@ def book_api():
             "username": usr,
         }
         return jsonify(dict), 200
+
+
+@app.route("/api/submit_review/", methods=["POST"])
+def review_api():
+    if request.method == "POST":
+
+        var = request.json
+        # print("-------------------", var)
+        isbn = var["isbn"]
+        username = var["username"]
+        rating = var["rating"]
+        reviews = var["reviews"]
+        print(isbn, username, rating, reviews)
+
+        # if "username" and "isbn" in request.args:
+        #     username = request.args["username"]
+        #     isbn = request.args["isbn"]
+        #     rating = request.args["rating"]
+        #     reviews = request.args["review"]
+        # else:
+        #     return "Error: no isbn/username/rating/review/ field provided"
+
+        # check if the paticular user given review before
+        rev_From_db = review.query.filter(
+            review.isbn.like(isbn), review.username.like(username)
+        ).first()
+        print("first", str(rev_From_db))
+
+        # if the user doesnt give the review for that book
+        if rev_From_db is None:
+
+            try:
+                # bring the book details
+                book = books.query.filter_by(isbn=isbn).first()
+                print("book", str(book))
+            except:
+                message = "Enter valid ISBN"
+                return jsonify(message), 404
+
+            timestamp = time.ctime(time.time())
+            title = book.title
+            user = review(
+                isbn=isbn,
+                review=reviews,
+                rating=rating,
+                time_stamp=timestamp,
+                title=title,
+                username=username,
+            )
+            db.session.add(user)
+            db.session.commit()
+
+            allreviews = review.query.filter_by(isbn=isbn).all()
+            rew = []
+            timeStamp = []
+            usr = []
+            for rev in allreviews:
+                rew.append(rev.review)
+                timeStamp.append(rev.time_stamp)
+                usr.append(rev.username)
+
+            dict = {
+                "isbn": isbn,
+                "review": rew,
+                "time_stamp": timeStamp,
+                "username": usr,
+                "message": "You reviewed this book.",
+            }
+
+            return jsonify(dict), 200
+        else:
+            dict = {"message": "You already reviewed this book."}
+            return jsonify(dict), 200
 
 
 @app.teardown_appcontext
